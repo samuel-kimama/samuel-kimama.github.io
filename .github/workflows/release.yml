@@ -64,7 +64,6 @@ jobs:
 
       - name: Build changelog
         if: steps.release.outputs.skip != 'true'
-        id: changelog
         run: |
           RANGE="${{ steps.release.outputs.range }}"
           LOG="${RANGE:-HEAD}"
@@ -74,14 +73,15 @@ jobs:
             local lines=""
             for type in "$@"; do
               while IFS= read -r msg; do
-                [ -n "$msg" ] && lines+="- ${msg}"$'\n'
+                [ -n "$msg" ] && lines+="${lines:+$'\n'}- ${msg}"
               done < <(git log $LOG --pretty=format:"%s" | grep -E "^${type}(\(.+\))?:" | sed -E "s/^[^:]+(\([^)]+\))?: //")
             done
-            [ -n "$lines" ] && printf "### %s\n%s\n" "$title" "$lines"
+            if [ -n "$lines" ]; then
+              printf "### %s\n%s\n\n" "$title" "$lines"
+            fi
           }
 
           {
-            echo "notes<<EOF"
             section "Features"       feat
             section "Bug Fixes"      fix
             section "Performance"    perf
@@ -89,8 +89,7 @@ jobs:
             section "Documentation"  docs
             section "Styles"         style
             section "Tests"          test
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
+          } > /tmp/changelog.md
 
       - name: Bump version and tag
         if: steps.release.outputs.skip != 'true'
@@ -111,4 +110,4 @@ jobs:
         run: |
           gh release create "v${{ steps.release.outputs.version }}" \
             --title "v${{ steps.release.outputs.version }}" \
-            --notes "${{ steps.changelog.outputs.notes }}"
+            --notes-file /tmp/changelog.md
