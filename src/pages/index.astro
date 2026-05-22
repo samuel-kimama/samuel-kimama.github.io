@@ -8,9 +8,18 @@ const { profile, strengths, technologies, timeline } = await getResumeData();
 const recentTimeline = timeline.slice(0, 2);
 const additionalTimeline = timeline.slice(2);
 const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama-Resume.pdf";
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": siteContent.faq.map(({ q, a }) => ({
+    "@type": "Question",
+    "name": q,
+    "acceptedAnswer": { "@type": "Answer", "text": a }
+  }))
+});
 ---
 
-<BaseLayout title={`${profile.name} | Portfolio`} description={profile.summary}>
+<BaseLayout title={`${profile.name} | Staff Frontend Engineer`} description={profile.summary}>
   <section class="hero u-screen-fit" id="home">
     <div>
       <p class="hero-kicker">Hi, I&apos;m</p>
@@ -32,17 +41,14 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
     </div>
   </section>
 
-{
-  false && (
-    <section class="section" id="about">
+  <section class="section" id="about">
     <div class="section-heading">
       <div>
         <span class="eyebrow">About</span>
         <h2>Architecture, leverage, and complex product work.</h2>
       </div>
       <p>
-        Senior frontend engineer operating with Staff / Principal scope
-        across platform, product, and organizational boundaries.
+        Samuel Kimama is a Staff Frontend Engineer operating at Staff to Principal scope across product, platform, and organizational boundaries.
       </p>
     </div>
     <div class="resume-grid" style="margin-top: 1rem;">
@@ -61,7 +67,6 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
       </article>
     </div>
   </section>
-)}
 
   {
     false && (
@@ -102,6 +107,14 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
       >
         <Icon name="lucide:download" size="1rem" aria-hidden="true" />
         Download resume
+      </a>
+      <a
+        class="button button--secondary resume-action"
+        href={profile.contact.linkedin}
+        target="_blank"
+        rel="noreferrer"
+      >
+        View LinkedIn profile
       </a>
     </div>
     <div class="timeline" style="grid-template-columns: 1fr; gap: 1rem;">
@@ -201,4 +214,22 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
       </section>
     )
   }
+
+  <section class="section" id="faq">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow" style="margin-bottom: 0;">FAQ</span>
+        <h2>Common questions</h2>
+      </div>
+    </div>
+    <div class="faq-list">
+      {siteContent.faq.map(({ q, a }) => (
+        <details class="faq-item">
+          <summary class="faq-question">{q}</summary>
+          <p class="faq-answer">{a}</p>
+        </details>
+      ))}
+    </div>
+    <script is:inline type="application/ld+json" set:html={faqSchema} />
+  </section>
 </BaseLayout>
