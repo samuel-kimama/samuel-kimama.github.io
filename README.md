@@ -32,11 +32,11 @@ PUBLIC_SITE_URL=https://your-domain.com
 
 ## Versioning and releases
 
-This repo uses [Conventional Commits](https://www.conventionalcommits.org/) and [release-please](https://github.com/googleapis/release-please) for automated semantic versioning.
+This repo uses [Conventional Commits](https://www.conventionalcommits.org/) for automated semantic versioning via a custom GitHub Actions workflow.
 
 ### Commit types and version bumps
 
-| Commit prefix | Version bump | Release PR? |
+| Commit prefix | Version bump | Triggers release? |
 |---|---|---|
 | `feat:` | minor (0.x.0) | yes |
 | `feat!:` / `BREAKING CHANGE:` | major (x.0.0) | yes |
@@ -46,11 +46,10 @@ This repo uses [Conventional Commits](https://www.conventionalcommits.org/) and 
 ### Release flow
 
 1. Commit to `main` using conventional commit messages.
-2. The `release-please` workflow automatically opens or updates a **Release PR** that bumps the version in `package.json`, updates `CHANGELOG.md`, and lists all changes since the last release.
-3. Merge the Release PR when ready to cut a release — this creates a GitHub Release and a version tag (e.g. `v1.2.0`).
-4. The deploy workflow picks up the merge and publishes the site.
+2. The `release` workflow inspects commits since the last tag. If any releasable commit exists, it bumps `package.json`, creates a version tag, and publishes a GitHub Release with a grouped changelog.
+3. `build:` and `chore:` commits are tracked in git history but never trigger a release.
 
-The site deploys on every push to `main`, not only on releases. Releases exist to track a versioned history of significant changes.
+The site deploys on every push to `main`. Releases tag a versioned snapshot with a changelog.
 
 ## Deploy to GitHub Pages
 
