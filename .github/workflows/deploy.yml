@@ -60,7 +60,6 @@ jobs:
           key: ${{ runner.os }}-puppeteer-${{ steps.dep-hash.outputs.hash }}
 
       - name: Install Chromium
-        if: steps.cache-puppeteer.outputs.cache-hit != 'true'
         run: npx puppeteer browsers install chrome
 
       - name: Build site
