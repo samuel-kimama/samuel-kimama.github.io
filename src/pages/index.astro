@@ -183,6 +183,25 @@ const faqSchema = JSON.stringify({
         </ul>
       </article>
     </div>
+    <div class="section">
+      <article class="resume-block">
+        <h3>Patents</h3>
+        <ul class="patent-list" aria-label="Patents">
+          <li class="patent-item">
+            <p class="patent-entry">
+              <a
+                href="https://patents.google.com/patent/US12587529B2/en"
+                target="_blank"
+                rel="noreferrer"
+                class="patent-title-link"
+                title="Methods and systems for security enhancement in artificial intelligence model interactions via automated injection and proxy server implementation"
+              >Real-time security for AI interactions</a>{" — proxy-injected, real-time policy enforcement on AI input/output."}
+            </p>
+            <p class="patent-meta">US 12,587,529 B2 · Issued Mar 2026 · WitnessAI</p>
+          </li>
+        </ul>
+      </article>
+    </div>
   </section>
 
   {
@@ -195,21 +214,32 @@ const faqSchema = JSON.stringify({
           </div>
         </div>
         <div class="project-grid">
-          {siteContent.projects.map((project) => (
-            <article class="project-card">
-              <div class="project-meta">
-                <span>{project.category}</span>
-                <span>{project.year}</span>
-              </div>
-              <h3>{project.name}</h3>
-              <p style="margin-top: 0.75rem;">{project.description}</p>
-              {/* <div class="actions">
-                <a class="text-link" href={project.href}>
-                  View section
-                </a>
-              </div> */}
-            </article>
-          ))}
+          {siteContent.projects.map((project) => {
+            const isExternal = project.href?.startsWith("http");
+            return project.href ? (
+              <a
+                href={project.href}
+                class="project-card"
+                {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
+              >
+                <div class="project-meta">
+                  <span>{project.category}</span>
+                  <span>{project.year}</span>
+                </div>
+                <h3>{project.name}</h3>
+                <p style="margin-top: 0.75rem;">{project.description}</p>
+              </a>
+            ) : (
+              <article class="project-card">
+                <div class="project-meta">
+                  <span>{project.category}</span>
+                  <span>{project.year}</span>
+                </div>
+                <h3>{project.name}</h3>
+                <p style="margin-top: 0.75rem;">{project.description}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
     )

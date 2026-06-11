@@ -44,6 +44,23 @@ export const siteContent = {
   ],
   projects: [
     {
+      name: "Etch",
+      category: "Browser Extension",
+      year: "2026",
+      href: "https://k-leumas.github.io/etch-extension/",
+      description:
+        "Bookmark and navigate moments in LLM conversations. A selectorless, geometry-based architecture keeps bookmarks resilient to UI changes across Claude and ChatGPT."
+    },
+    {
+      name: "QueQue",
+      category: "Developer Tooling",
+      year: "2026",
+      // TODO: swap href to GitHub Pages site when it ships
+      href: "https://github.com/k-leumas/queque",
+      description:
+        "A terminal-native AI command synthesizer, triggered with `??`. Meets you mid-thought — describe what you're trying to do and get the command, right in your shell."
+    },
+    {
       name: "Personal Site System",
       category: "Design / Frontend",
       year: "2026",
