@@ -1,8 +1,8 @@
 export const siteContent = {
   about: [
-    "My work consistently sits at the point where product complexity, organizational ambiguity, and frontend architecture meet. I tend to be the engineer brought in when a company needs stronger foundations: clear component models, dependable UI contracts, scalable patterns, and better leverage across teams.",
-    "Across SaaS platforms, enterprise modernization efforts, ML-enabled products, and high-scale consumer systems, I have operated beyond feature delivery. I define architecture, align with backend and product partners, raise quality bars, unblock teams, and make the frontend a first-class layer rather than a thin presentation surface.",
-    "The throughline in my career is leverage. I care about performance, accessibility, usability, and developer efficiency because strong systems compound: they reduce friction for users, reduce drag for engineers, and make future product bets easier to execute."
+    "My work sits where product complexity, team scale, and frontend architecture collide. I'm the engineer companies call when they need stronger foundations: clear component models, reliable API contracts, and patterns that hold up as teams grow.",
+    "Across SaaS platforms, enterprise modernization, ML-enabled products, and high-scale consumer systems, I work beyond feature delivery. I define architecture, align with backend and product partners, raise quality standards, and make the frontend a capable, first-class layer.",
+    "The throughline is leverage. Strong systems compound — reducing friction for users and drag for engineers, and making future product bets easier to execute."
   ],
   availabilityEyebrow: "Open to roles",
   availability:
@@ -26,20 +26,29 @@ export const siteContent = {
   ],
   projects: [
     {
+      name: "Etch",
+      category: "Browser Extension",
+      year: "2026",
+      href: "https://k-leumas.github.io/etch-extension/",
+      description:
+        "Bookmark and navigate moments in LLM conversations. A selectorless, geometry-based architecture keeps bookmarks resilient to UI changes across Claude and ChatGPT."
+    },
+    {
+      name: "QueQue",
+      category: "Developer Tooling",
+      year: "2026",
+      // TODO: swap href to GitHub Pages site when it ships
+      href: "https://github.com/k-leumas/queque",
+      description:
+        "A terminal-native AI command synthesizer, triggered with `??`. Meets you mid-thought — describe what you're trying to do and get the command, right in your shell."
+    },
+    {
       name: "Personal Site System",
       category: "Design / Frontend",
       year: "2026",
       href: "#home",
       description:
         "An Astro-based personal site designed as a long-lived content system rather than a one-off portfolio, with an emphasis on strong typography, fast navigation, and clear information density."
-    },
-    // {
-    //   name: "AI Workflow Experiments",
-    //   category: "Product Exploration",
-    //   year: "2025–2026",
-    //   href: "#projects",
-    //   description:
-    //     "A set of independent explorations around AI-assisted product workflows, focused on practical interfaces, model ergonomics, and how people actually interact with generated output."
-    // }
+    }
   ]
 };

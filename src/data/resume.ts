@@ -29,10 +29,12 @@ export async function getResumeData() {
     period: `${formatMonth(item.start)} – ${formatMonth(item.end)}`,
     role: item.title,
     company: item.company,
+    location: item.location,
     scope: item.scope ?? "",
     summary: item.summary,
     highlights: item.highlights,
     impact: item.impact,
+    patents: item.patents,
   }));
 
   return {

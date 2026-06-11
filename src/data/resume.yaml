@@ -8,7 +8,7 @@ profile:
     linkedin: https://linkedin.com/in/samuelkimama
     github: https://github.com/samuelmburu
   summary: >
-    Staff-level frontend engineer with 16+ years of experience leading architecture across product, platform, and design boundaries. I build resilient frontend systems, define scalable engineering patterns, and align cross-functional teams to ship complex products faster with higher quality. Known for creating organizational leverage through standards, mentoring, and technical direction that improve both delivery speed and user outcomes.
+    Samuel Kimama is a Staff Frontend Engineer with 16+ years of experience leading architecture across product, platform, and design boundaries. He builds resilient frontend systems, defines scalable engineering patterns, and aligns cross-functional teams to ship complex products faster with higher quality — known for creating organizational leverage through standards, mentoring, and technical direction.
 
 core_strengths:
   - Frontend Architecture & UI Systems
@@ -21,6 +21,7 @@ experience:
   - company: WITNESS AI
     title: Senior Software Engineer
     scope: Staff-level scope
+    location: Remote
     start: 2023-01
     end: 2026-01
     summary: >
@@ -36,10 +37,19 @@ experience:
       Implemented RBAC and WorkOS SSO integrations, elevating the frontend into
       a first-class product layer used for secure, role-based workflows and
       enabling WITNESS AI to engage multiple large enterprise clients.
+    patents:
+      - title: Real-time security for AI interactions
+        description: proxy-injected, real-time policy enforcement on AI input/output.
+        number: US 12,587,529 B2
+        issued: Mar 2026
+        assignee: WitnessAI
+        href: https://patents.google.com/patent/US12587529B2/en
+        full_title: Methods and systems for security enhancement in artificial intelligence model interactions via automated injection and proxy server implementation
 
   - company: Southwest Airlines
     title: Senior Software Engineer
     scope: Staff-level scope
+    location: Remote
     start: 2022-06
     end: 2023-05
     summary: >
@@ -58,6 +68,7 @@ experience:
   - company: Confidential Client (NDA)
     title: Lead Frontend Engineer
     scope: Staff-level scope
+    location: Remote
     start: 2021-03
     end: 2022-09
     summary: >

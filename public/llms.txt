@@ -1,0 +1,65 @@
+# Samuel Kimama — Staff Frontend Engineer
+
+Samuel Kimama is a Staff Frontend Engineer with 16+ years of experience leading architecture across product, platform, and design boundaries. He builds resilient frontend systems, defines scalable engineering patterns, and aligns cross-functional teams to ship complex products faster with higher quality — known for creating organizational leverage through standards, mentoring, and technical direction.
+
+Open to roles. Targeting remote Staff frontend roles with broad product and platform ownership.
+
+## About
+
+My work sits where product complexity, team scale, and frontend architecture collide. I'm the engineer companies call when they need stronger foundations: clear component models, reliable API contracts, and patterns that hold up as teams grow.
+
+Across SaaS platforms, enterprise modernization, ML-enabled products, and high-scale consumer systems, I work beyond feature delivery. I define architecture, align with backend and product partners, raise quality standards, and make the frontend a capable, first-class layer.
+
+The throughline is leverage. Strong systems compound — reducing friction for users and drag for engineers, and making future product bets easier to execute.
+
+## Core strengths
+
+- Frontend Architecture & UI Systems
+- Cross-Functional Leadership (Product, ML, Backend)
+- Developer Productivity & Platform Leverage
+- Performance, A11y, and Quality at Scale
+- Design Systems & Scalable Component Models
+
+## Experience
+
+**Senior Software Engineer — WITNESS AI (Jan 2023 – Jan 2026)**
+First UI engineer, responsible for establishing frontend architecture and enabling cross-team delivery for a rapidly evolving SaaS platform. Established the frontend architecture (React + TypeScript), defining component systems, API contracts, and patterns adopted across the product. Designed, implemented, and documented a company-wide RBAC system. Led integration of enterprise SSO (WorkOS). Patent issued: US 12,587,529 B2 — Real-time security for AI interactions (proxy-injected, real-time policy enforcement on AI input/output). Issued Mar 2026.
+
+**Senior Software Engineer — Southwest Airlines (Jun 2022 – May 2023)**
+Staff-level contributor on a large-scale modernization initiative migrating critical systems to a cloud-native architecture. Led frontend decomposition of a legacy monolith into micro-frontends (Single-SPA). Built a GraphQL/BFF layer transforming legacy APIs into UI-optimized read models.
+
+**Lead Frontend Engineer — Confidential Client, NDA (Mar 2021 – Sep 2022)**
+Principal frontend engineer for a multi-application platform integrating ML-driven workflows. Defined frontend architecture for a React + TypeScript mono-repo. Established frontend standards for A11y, analytics, performance, and testing.
+
+**Lead Frontend Engineer — Survata (Jun 2015 – Apr 2020)**
+First frontend engineer, later de facto frontend lead for a B2B SaaS analytics platform. Architected frontend systems across an AngularJS to React migration. Built a data visualization platform (D3-based plugin system). 67% TTFB reduction for return visitors.
+
+**Senior Software Engineer — LinkedIn (Mar 2012 – Oct 2014)**
+Led development of login and authentication flows used across web and mobile web at LinkedIn scale.
+
+## Technologies
+
+React, TypeScript, JavaScript (ES6+), D3, Node.js, AWS, GraphQL, HTML/CSS, Webpack, Vite, Jest, RTL
+
+## Patents
+
+US 12,587,529 B2 — Real-time security for AI interactions
+Proxy-injected, real-time policy enforcement on AI input/output.
+Issued Mar 2026 · WitnessAI
+https://patents.google.com/patent/US12587529B2/en
+
+## Projects
+
+**Etch** — Browser Extension · 2026
+Bookmark and navigate moments in LLM conversations. A selectorless, geometry-based architecture keeps bookmarks resilient to UI changes across Claude and ChatGPT.
+https://k-leumas.github.io/etch-extension/
+
+**QueQue** — Developer Tooling · 2026
+A terminal-native AI command synthesizer, triggered with `??`. Meets you mid-thought — describe what you're trying to do and get the command, right in your shell.
+https://github.com/k-leumas/queque
+
+## Contact
+
+- LinkedIn: https://linkedin.com/in/samuelkimama
+- GitHub: https://github.com/samuelmburu
+- Site: https://samuel-kimama.github.io/

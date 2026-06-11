@@ -5,6 +5,43 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const siteBase = Astro.site ?? new URL("https://samuel-kimama.github.io");
+const canonicalUrl = new URL(Astro.url.pathname, siteBase).href;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Samuel Kimama",
+  "jobTitle": "Staff Frontend Engineer",
+  "description": "Staff Frontend Engineer with 16+ years of experience in frontend architecture, UI systems, and cross-functional engineering leadership.",
+  "url": new URL("/", siteBase).href,
+  "sameAs": [
+    "https://linkedin.com/in/samuelkimama",
+    "https://github.com/samuelmburu"
+  ],
+  "knowsAbout": [
+    "Frontend Architecture",
+    "React",
+    "TypeScript",
+    "UI Systems",
+    "Design Systems",
+    "GraphQL",
+    "Developer Productivity",
+    "Micro-frontend Architecture",
+    "Accessibility"
+  ],
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "The Ohio State University"
+  }
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Samuel Kimama | Staff Frontend Engineer",
+  "url": new URL("/", siteBase).href
+};
 ---
 
 <meta charset="utf-8" />
@@ -12,8 +49,19 @@ const { title, description } = Astro.props;
 <meta name="description" content={description} />
 <meta name="generator" content={Astro.generator} />
 <title>{title}</title>
+<link rel="canonical" href={canonicalUrl} />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:site_name" content="Samuel Kimama" />
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+
 <link rel="preload" href="/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="/fonts/fonts.css" />
-<script defer src="https://cloud.umami.is/script.js" data-website-id="b77a3787-9447-4ccb-a646-a474b81c578b"></script>
+<script is:inline defer src="https://cloud.umami.is/script.js" data-website-id="b77a3787-9447-4ccb-a646-a474b81c578b"></script>

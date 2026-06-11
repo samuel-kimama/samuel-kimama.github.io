@@ -10,7 +10,7 @@ const additionalTimeline = timeline.slice(2);
 const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama-Resume.pdf";
 ---
 
-<BaseLayout title={`${profile.name} | Portfolio`} description={profile.summary}>
+<BaseLayout title={`${profile.name} | Staff Frontend Engineer`} description={profile.summary}>
   <section class="hero u-screen-fit" id="home">
     <div>
       <p class="hero-kicker">Hi, I&apos;m</p>
@@ -32,18 +32,12 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
     </div>
   </section>
 
-{
-  false && (
-    <section class="section" id="about">
+  <section class="section" id="about">
     <div class="section-heading">
       <div>
         <span class="eyebrow">About</span>
         <h2>Architecture, leverage, and complex product work.</h2>
       </div>
-      <p>
-        Senior frontend engineer operating with Staff / Principal scope
-        across platform, product, and organizational boundaries.
-      </p>
     </div>
     <div class="resume-grid" style="margin-top: 1rem;">
       <article class="panel">
@@ -61,7 +55,6 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
       </article>
     </div>
   </section>
-)}
 
   {
     false && (
@@ -103,6 +96,14 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
         <Icon name="lucide:download" size="1rem" aria-hidden="true" />
         Download resume
       </a>
+      <a
+        class="button button--secondary resume-action"
+        href={profile.contact.linkedin}
+        target="_blank"
+        rel="noreferrer"
+      >
+        View LinkedIn profile
+      </a>
     </div>
     <div class="timeline" style="grid-template-columns: 1fr; gap: 1rem;">
       {
@@ -113,7 +114,7 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
               {/* <span>{entry.scope}</span> */}
             </div>
             <h3>{entry.role}</h3>
-            <p style="margin-top: 0.35rem;">{entry.company}</p>
+            <p style="margin-top: 0.35rem;">{entry.company}{entry.location && <span class="role-location"> · {entry.location}</span>}</p>
             <p style="margin-top: 0.85rem;">{entry.summary}</p>
             <ul class="list">
               {entry.highlights.map((item) => (
@@ -123,6 +124,27 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
             <p style="margin-top: 1rem;">
               <strong>Impact:</strong> {entry.impact}
             </p>
+            {entry.patents && entry.patents.length > 0 && (
+              <div class="patent-row" style="margin-top: 1rem;">
+                <span class="patent-row__label" aria-hidden="true">Patent</span>
+                <ul class="patent-row__list" aria-label="Patents">
+                  {entry.patents.map((patent) => (
+                    <li class="patent-row__item">
+                      <p class="patent-entry">
+                        <a
+                          href={patent.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          class="patent-title-link"
+                          title={patent.full_title}
+                        >{patent.title}</a>{` — ${patent.description}`}
+                      </p>
+                      <p class="patent-meta">{patent.number} · Issued {patent.issued} · {patent.assignee}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </article>
         ))
       }
@@ -143,7 +165,7 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
                     {/* <span>{entry.scope}</span> */}
                   </div>
                   <h3>{entry.role}</h3>
-                  <p style="margin-top: 0.35rem;">{entry.company}</p>
+                  <p style="margin-top: 0.35rem;">{entry.company}{entry.location && <span class="role-location"> · {entry.location}</span>}</p>
                   <p style="margin-top: 0.85rem;">{entry.summary}</p>
                   <ul class="list">
                     {entry.highlights.map((item) => (
@@ -182,23 +204,35 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
           </div>
         </div>
         <div class="project-grid">
-          {siteContent.projects.map((project) => (
-            <article class="project-card">
-              <div class="project-meta">
-                <span>{project.category}</span>
-                <span>{project.year}</span>
-              </div>
-              <h3>{project.name}</h3>
-              <p style="margin-top: 0.75rem;">{project.description}</p>
-              {/* <div class="actions">
-                <a class="text-link" href={project.href}>
-                  View section
-                </a>
-              </div> */}
-            </article>
-          ))}
+          {siteContent.projects.map((project) => {
+            const isExternal = project.href?.startsWith("http");
+            return project.href ? (
+              <a
+                href={project.href}
+                class="project-card"
+                {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
+              >
+                <div class="project-meta">
+                  <span>{project.category}</span>
+                  <span>{project.year}</span>
+                </div>
+                <h3>{project.name}</h3>
+                <p style="margin-top: 0.75rem;">{project.description}</p>
+              </a>
+            ) : (
+              <article class="project-card">
+                <div class="project-meta">
+                  <span>{project.category}</span>
+                  <span>{project.year}</span>
+                </div>
+                <h3>{project.name}</h3>
+                <p style="margin-top: 0.75rem;">{project.description}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
     )
   }
+
 </BaseLayout>

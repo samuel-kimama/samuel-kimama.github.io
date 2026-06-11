@@ -16,6 +16,7 @@ const { profile, socialLinks } = await getResumeData();
 
 const navItems = [
   { href: "#home", label: "Home" },
+  { href: "#about", label: "About" },
   { href: "#resume", label: "Resume" },
   siteContent.projects.length > 0 && { href: "#projects", label: "Projects" },
 ].filter(Boolean) as { href: string; label: string }[];
@@ -86,6 +87,10 @@ const navItems = [
     </main>
     <footer class="shell site-footer">
       <p class="muted text-sm text-right">
+        <a href="https://linkedin.com/in/samuelkimama" target="_blank" rel="noreferrer" class="footer-link">Contact</a>
+        <span aria-hidden="true"> &middot; </span>
+        <a href="#about" class="footer-link">About</a>
+        <span aria-hidden="true"> &middot; </span>
         Built with Astro &copy; {new Date().getFullYear()}
         <span class="site-version">v{version}</span>
       </p>

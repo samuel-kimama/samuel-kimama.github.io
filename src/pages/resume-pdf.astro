@@ -48,9 +48,10 @@ const technologyLine = technologies.join(" • ");
 
       main {
         width: var(--page-width);
-        min-height: var(--page-height);
         padding: var(--page-margin);
-        display: grid; gap: 0.05in;
+        display: grid;
+        gap: 0.05in;
+        align-content: start;
         background: #ffffff;
       }
 
@@ -69,6 +70,7 @@ const technologyLine = technologies.join(" • ");
         }
 
         main {
+          min-height: var(--page-height);
           box-shadow:
             0 24px 60px rgba(22, 22, 22, 0.14),
             0 8px 22px rgba(22, 22, 22, 0.08);
@@ -135,7 +137,6 @@ const technologyLine = technologies.join(" • ");
         display: grid;
         grid-template-columns: 2.25fr 0.95fr;
         gap: 0.2in;
-        margin-top: 0.1in;
         align-items: start;
       }
 
@@ -190,6 +191,14 @@ const technologyLine = technologies.join(" • ");
         font-weight: 600;
       }
 
+      .role-location {
+        font-size: 8px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
       .role-period {
         flex-shrink: 0;
         color: var(--muted);
@@ -228,6 +237,63 @@ const technologyLine = technologies.join(" • ");
       .skills-copy {
         font-size: 9.8px;
         line-height: 1.35;
+        color: var(--muted);
+      }
+
+      .role-patent {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+          "label header"
+          ".     desc";
+        column-gap: 0.06in;
+        row-gap: 0.02in;
+        margin: 0.045in 0 0;
+        break-inside: avoid;
+      }
+
+      .role-patent + .role-patent {
+        margin-top: 0.06in;
+        padding-top: 0.06in;
+        border-top: 0.5px solid var(--line);
+      }
+
+      .role-patent__label {
+        grid-area: label;
+        align-self: baseline;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .role-patent__header {
+        grid-area: header;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.12in;
+        align-items: baseline;
+      }
+
+      .role-patent__title {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      .role-patent__number {
+        flex-shrink: 0;
+        font-size: 9px;
+        color: var(--muted);
+      }
+
+      .role-patent__desc {
+        grid-area: desc;
+        margin: 0;
+        font-size: 9.6px;
+        line-height: 1;
         color: var(--muted);
       }
     </style>
@@ -272,6 +338,7 @@ const technologyLine = technologies.join(" • ");
                   <h3 class="role-title">
                     {entry.role}{" "}
                     <span class="role-company">• {entry.company}</span>
+                    {entry.location && <span class="role-location"> · {entry.location}</span>}
                   </h3>
                   <span class="role-period">{entry.period}</span>
                 </div>
@@ -285,6 +352,16 @@ const technologyLine = technologies.join(" • ");
                 <p class="role-impact">
                   <strong>Impact:</strong> {entry.impact}
                 </p>
+                {entry.patents && entry.patents.length > 0 && entry.patents.map((patent) => (
+                  <div class="role-patent">
+                    <span class="role-patent__label">Patent</span>
+                    <div class="role-patent__header">
+                      <a href={patent.href} class="role-patent__title" title={patent.full_title}>{patent.title}</a>
+                      <span class="role-patent__number">{patent.number} · {patent.issued}</span>
+                    </div>
+                    <p class="role-patent__desc">{patent.description}</p>
+                  </div>
+                ))}
               </article>
             ))
           }
