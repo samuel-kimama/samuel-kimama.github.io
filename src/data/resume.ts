@@ -33,6 +33,7 @@ export async function getResumeData() {
     summary: item.summary,
     highlights: item.highlights,
     impact: item.impact,
+    patents: item.patents,
   }));
 
   return {

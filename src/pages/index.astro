@@ -8,15 +8,6 @@ const { profile, strengths, technologies, timeline } = await getResumeData();
 const recentTimeline = timeline.slice(0, 2);
 const additionalTimeline = timeline.slice(2);
 const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama-Resume.pdf";
-const faqSchema = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": siteContent.faq.map(({ q, a }) => ({
-    "@type": "Question",
-    "name": q,
-    "acceptedAnswer": { "@type": "Answer", "text": a }
-  }))
-});
 ---
 
 <BaseLayout title={`${profile.name} | Staff Frontend Engineer`} description={profile.summary}>
@@ -136,6 +127,24 @@ const faqSchema = JSON.stringify({
             <p style="margin-top: 1rem;">
               <strong>Impact:</strong> {entry.impact}
             </p>
+            {entry.patents && entry.patents.length > 0 && (
+              <ul class="patent-list" aria-label="Patents" style="margin-top: 1rem;">
+                {entry.patents.map((patent) => (
+                  <li class="patent-item">
+                    <p class="patent-entry">
+                      <a
+                        href={patent.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="patent-title-link"
+                        title={patent.full_title}
+                      >{patent.title}</a>{` — ${patent.description}`}
+                    </p>
+                    <p class="patent-meta">{patent.number} · Issued {patent.issued} · {patent.assignee}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
           </article>
         ))
       }
@@ -183,25 +192,6 @@ const faqSchema = JSON.stringify({
         </ul>
       </article>
     </div>
-    <div class="section">
-      <article class="resume-block">
-        <h3>Patents</h3>
-        <ul class="patent-list" aria-label="Patents">
-          <li class="patent-item">
-            <p class="patent-entry">
-              <a
-                href="https://patents.google.com/patent/US12587529B2/en"
-                target="_blank"
-                rel="noreferrer"
-                class="patent-title-link"
-                title="Methods and systems for security enhancement in artificial intelligence model interactions via automated injection and proxy server implementation"
-              >Real-time security for AI interactions</a>{" — proxy-injected, real-time policy enforcement on AI input/output."}
-            </p>
-            <p class="patent-meta">US 12,587,529 B2 · Issued Mar 2026 · WitnessAI</p>
-          </li>
-        </ul>
-      </article>
-    </div>
   </section>
 
   {
@@ -245,21 +235,4 @@ const faqSchema = JSON.stringify({
     )
   }
 
-  <section class="section" id="faq">
-    <div class="section-heading">
-      <div>
-        <span class="eyebrow" style="margin-bottom: 0;">FAQ</span>
-        <h2>Common questions</h2>
-      </div>
-    </div>
-    <div class="faq-list">
-      {siteContent.faq.map(({ q, a }) => (
-        <details class="faq-item">
-          <summary class="faq-question">{q}</summary>
-          <p class="faq-answer">{a}</p>
-        </details>
-      ))}
-    </div>
-    <script is:inline type="application/ld+json" set:html={faqSchema} />
-  </section>
 </BaseLayout>

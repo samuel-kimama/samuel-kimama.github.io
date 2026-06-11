@@ -36,6 +36,14 @@ experience:
       Implemented RBAC and WorkOS SSO integrations, elevating the frontend into
       a first-class product layer used for secure, role-based workflows and
       enabling WITNESS AI to engage multiple large enterprise clients.
+    patents:
+      - title: Real-time security for AI interactions
+        description: proxy-injected, real-time policy enforcement on AI input/output.
+        number: US 12,587,529 B2
+        issued: Mar 2026
+        assignee: WitnessAI
+        href: https://patents.google.com/patent/US12587529B2/en
+        full_title: Methods and systems for security enhancement in artificial intelligence model interactions via automated injection and proxy server implementation
 
   - company: Southwest Airlines
     title: Senior Software Engineer
