@@ -28,11 +28,40 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
-          cache: npm
+          node-version-file: .nvmrc
+
+      - name: Compute dependency hash
+        id: dep-hash
+        run: |
+          echo "hash=$(jq -j '{dependencies, devDependencies, overrides}' package.json | sha256sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ steps.dep-hash.outputs.hash }}
 
       - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
+
+      # astro-pdf uses puppeteer to generate the resume PDF during build.
+      # ubuntu-latest has no browser pre-installed, so puppeteer tries to
+      # download one mid-build and races against the build completing — the
+      # PDF never makes it into dist/. Pre-installing and caching chrome
+      # (keyed to dep hash so it refreshes when puppeteer updates, but not
+      # on every version bump) prevents that race and avoids re-downloading.
+      - name: Cache Puppeteer browser
+        id: cache-puppeteer
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/puppeteer
+          key: ${{ runner.os }}-puppeteer-${{ steps.dep-hash.outputs.hash }}
+
+      - name: Install Chromium
+        if: steps.cache-puppeteer.outputs.cache-hit != 'true'
+        run: npx puppeteer browsers install chrome
 
       - name: Build site
         run: npm run build
