@@ -216,7 +216,10 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
                   <span>{project.category}</span>
                   <span>{project.year}</span>
                 </div>
-                <h3>{project.name}</h3>
+                <h3>
+                  {project.name}
+                  {isExternal && <Icon name="lucide:external-link" size="0.9em" aria-hidden="true" style="margin-left: 0.35em; vertical-align: middle; opacity: 0.5;" />}
+                </h3>
                 <p style="margin-top: 0.75rem;">{project.description}</p>
               </a>
             ) : (
