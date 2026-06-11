@@ -114,7 +114,7 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
               {/* <span>{entry.scope}</span> */}
             </div>
             <h3>{entry.role}</h3>
-            <p style="margin-top: 0.35rem;">{entry.company}</p>
+            <p style="margin-top: 0.35rem;">{entry.company}{entry.location && <span class="role-location"> · {entry.location}</span>}</p>
             <p style="margin-top: 0.85rem;">{entry.summary}</p>
             <ul class="list">
               {entry.highlights.map((item) => (
@@ -165,7 +165,7 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
                     {/* <span>{entry.scope}</span> */}
                   </div>
                   <h3>{entry.role}</h3>
-                  <p style="margin-top: 0.35rem;">{entry.company}</p>
+                  <p style="margin-top: 0.35rem;">{entry.company}{entry.location && <span class="role-location"> · {entry.location}</span>}</p>
                   <p style="margin-top: 0.85rem;">{entry.summary}</p>
                   <ul class="list">
                     {entry.highlights.map((item) => (

@@ -192,6 +192,14 @@ const technologyLine = technologies.join(" • ");
         font-weight: 600;
       }
 
+      .role-location {
+        font-size: 8px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
       .role-period {
         flex-shrink: 0;
         color: var(--muted);
@@ -331,6 +339,7 @@ const technologyLine = technologies.join(" • ");
                   <h3 class="role-title">
                     {entry.role}{" "}
                     <span class="role-company">• {entry.company}</span>
+                    {entry.location && <span class="role-location"> · {entry.location}</span>}
                   </h3>
                   <span class="role-period">{entry.period}</span>
                 </div>

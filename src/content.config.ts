@@ -23,6 +23,7 @@ const resume = defineCollection({
         company: z.string(),
         title: z.string(),
         scope: z.string().optional(),
+        location: z.string().optional(),
         start: z.string(),
         end: z.string(),
         summary: z.string(),
