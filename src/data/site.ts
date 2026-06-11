@@ -42,13 +42,5 @@ export const siteContent = {
       description:
         "A terminal-native AI command synthesizer, triggered with `??`. Meets you mid-thought — describe what you're trying to do and get the command, right in your shell."
     },
-    {
-      name: "Personal Site System",
-      category: "Design / Frontend",
-      year: "2026",
-      href: "#home",
-      description:
-        "An Astro-based personal site designed as a long-lived content system rather than a one-off portfolio, with an emphasis on strong typography, fast navigation, and clear information density."
-    }
   ]
 };
