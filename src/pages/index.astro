@@ -38,9 +38,6 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
         <span class="eyebrow">About</span>
         <h2>Architecture, leverage, and complex product work.</h2>
       </div>
-      <p>
-        Samuel Kimama is a Staff Frontend Engineer operating at Staff to Principal scope across product, platform, and organizational boundaries.
-      </p>
     </div>
     <div class="resume-grid" style="margin-top: 1rem;">
       <article class="panel">
@@ -128,22 +125,25 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
               <strong>Impact:</strong> {entry.impact}
             </p>
             {entry.patents && entry.patents.length > 0 && (
-              <ul class="patent-list" aria-label="Patents" style="margin-top: 1rem;">
-                {entry.patents.map((patent) => (
-                  <li class="patent-item">
-                    <p class="patent-entry">
-                      <a
-                        href={patent.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        class="patent-title-link"
-                        title={patent.full_title}
-                      >{patent.title}</a>{` — ${patent.description}`}
-                    </p>
-                    <p class="patent-meta">{patent.number} · Issued {patent.issued} · {patent.assignee}</p>
-                  </li>
-                ))}
-              </ul>
+              <div class="patent-row" style="margin-top: 1rem;">
+                <span class="patent-row__label" aria-hidden="true">Patent</span>
+                <ul class="patent-row__list" aria-label="Patents">
+                  {entry.patents.map((patent) => (
+                    <li class="patent-row__item">
+                      <p class="patent-entry">
+                        <a
+                          href={patent.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          class="patent-title-link"
+                          title={patent.full_title}
+                        >{patent.title}</a>{` — ${patent.description}`}
+                      </p>
+                      <p class="patent-meta">{patent.number} · Issued {patent.issued} · {patent.assignee}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </article>
         ))

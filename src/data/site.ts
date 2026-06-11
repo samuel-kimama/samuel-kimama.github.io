@@ -4,24 +4,6 @@ export const siteContent = {
     "Across SaaS platforms, enterprise modernization, ML-enabled products, and high-scale consumer systems, I work beyond feature delivery. I define architecture, align with backend and product partners, raise quality standards, and make the frontend a capable, first-class layer.",
     "The throughline is leverage. Strong systems compound — reducing friction for users and drag for engineers, and making future product bets easier to execute."
   ],
-  faq: [
-    {
-      q: "What does Samuel Kimama do?",
-      a: "Samuel Kimama is a Staff Frontend Engineer who designs scalable frontend systems, defines architecture, and helps product teams ship complex software faster and with higher quality. He operates at Staff to Principal scope — spanning component systems, API contracts, developer tooling, and cross-functional engineering leadership."
-    },
-    {
-      q: "What engineering problems does Samuel Kimama specialize in?",
-      a: "Samuel Kimama specializes in frontend architecture, UI systems engineering, design systems, and developer productivity. His work includes micro-frontend decomposition, RBAC systems, GraphQL BFF layers, performance optimization, and accessibility at scale."
-    },
-    {
-      q: "Is Samuel Kimama available for new roles?",
-      a: "Yes. Samuel Kimama is actively targeting remote Staff or Principal Frontend Engineer roles with broad product and platform ownership."
-    },
-    {
-      q: "What technologies does Samuel Kimama work with?",
-      a: "Samuel Kimama works primarily with React, TypeScript, and GraphQL. His broader stack includes Node.js, AWS, D3, Vite, and Webpack. He has led projects using micro-frontend frameworks (Single-SPA), design system tooling, and enterprise authentication integrations (WorkOS, SSO)."
-    }
-  ],
   availabilityEyebrow: "Open to roles",
   availability:
     "Targeting remote Staff frontend roles with broad product and platform ownership.",
