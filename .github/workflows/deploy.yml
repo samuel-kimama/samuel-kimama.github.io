@@ -46,25 +46,19 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
-      # astro-pdf uses puppeteer to generate the resume PDF during build.
-      # ubuntu-latest has no browser pre-installed, so puppeteer tries to
-      # download one mid-build and races against the build completing — the
-      # PDF never makes it into dist/. Pre-installing and caching chrome
-      # (keyed to dep hash so it refreshes when puppeteer updates, but not
-      # on every version bump) prevents that race and avoids re-downloading.
-      - name: Cache Puppeteer browser
-        id: cache-puppeteer
+      # astro-pdf downloads chrome into node_modules/.astro/chrome at build time.
+      # We cache that path separately so the download is skipped on subsequent runs.
+      # We always wipe it after restoring node_modules because a previous failed run
+      # may have left the folder structure without the binary, which causes
+      # @puppeteer/browsers to error ("folder exists but executable missing").
+      - name: Clear chrome from node_modules cache
+        run: rm -rf node_modules/.astro/chrome
+
+      - name: Cache Chromium binary
         uses: actions/cache@v4
         with:
-          path: ~/.cache/puppeteer
-          key: ${{ runner.os }}-puppeteer-${{ steps.dep-hash.outputs.hash }}
-
-      - name: Install Chromium
-        run: |
-          if ! find ~/.cache/puppeteer -name "chrome" -type f 2>/dev/null | grep -q .; then
-            rm -rf ~/.cache/puppeteer/chrome
-            npx puppeteer install chrome
-          fi
+          path: node_modules/.astro/chrome
+          key: ${{ runner.os }}-astro-chrome-${{ steps.dep-hash.outputs.hash }}
 
       - name: Build site
         run: npm run build
