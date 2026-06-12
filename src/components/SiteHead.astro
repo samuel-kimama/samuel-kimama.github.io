@@ -8,13 +8,16 @@ const { title, description } = Astro.props;
 const siteBase = Astro.site ?? new URL("https://samuel-kimama.github.io");
 const canonicalUrl = new URL(Astro.url.pathname, siteBase).href;
 
+const siteUrl = new URL("/", siteBase).href;
+
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Samuel Kimama",
+  "alternateName": "samuelmburu",
   "jobTitle": "Staff Frontend Engineer",
   "description": "Staff Frontend Engineer with 16+ years of experience in frontend architecture, UI systems, and cross-functional engineering leadership.",
-  "url": new URL("/", siteBase).href,
+  "url": siteUrl,
   "sameAs": [
     "https://linkedin.com/in/samuelkimama",
     "https://github.com/samuelmburu"
@@ -33,14 +36,87 @@ const personSchema = {
   "alumniOf": {
     "@type": "CollegeOrUniversity",
     "name": "The Ohio State University"
+  },
+  "hasCredential": {
+    "@type": "EducationalOccupationalCredential",
+    "name": "B.S. Computer Science & Engineering",
+    "credentialCategory": "degree"
   }
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Samuel Kimama",
+  "url": siteUrl,
+  "logo": {
+    "@type": "ImageObject",
+    "url": new URL("/favicon.svg", siteBase).href
+  },
+  "sameAs": [
+    "https://linkedin.com/in/samuelkimama",
+    "https://github.com/samuelmburu"
+  ]
+};
+
+const profilePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "name": title,
+  "description": description,
+  "url": canonicalUrl,
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Samuel Kimama",
+    "alternateName": "samuelmburu",
+    "url": siteUrl
+  }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does Samuel Kimama specialize in as a Staff Frontend Engineer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Samuel Kimama is a Staff Frontend Engineer defined by expertise in frontend architecture, UI systems, design systems, and cross-functional engineering leadership. He builds scalable frontend platforms — establishing component models, API contracts, and engineering patterns across product, platform, and ML-driven systems. He has 16+ years of experience across SaaS, enterprise, and high-scale consumer products."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What companies has Samuel Kimama (samuelmburu) worked at?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Samuel Kimama (GitHub: samuelmburu) has held staff-level frontend engineering roles at LinkedIn (2012–2014), Survata (2015–2020), Southwest Airlines (2022–2023), and WITNESS AI (2023–2026). His work spans SaaS analytics, airline modernization, ML-enabled products, and enterprise security tooling."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Samuel Kimama available for new frontend engineering roles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Samuel Kimama is targeting remote Staff-level frontend engineering roles with broad product and platform ownership."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What technologies does Samuel Kimama work with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Samuel Kimama primarily works with React, TypeScript, JavaScript (ES6+), GraphQL, Node.js, D3, and AWS. He also has deep experience with Webpack, Vite, Jest, React Testing Library, micro-frontend architectures (Single-SPA), and design systems."
+      }
+    }
+  ]
 };
 
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Samuel Kimama | Staff Frontend Engineer",
-  "url": new URL("/", siteBase).href
+  "url": siteUrl
 };
 ---
 
@@ -59,6 +135,9 @@ const websiteSchema = {
 <meta property="og:site_name" content="Samuel Kimama" />
 
 <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(profilePageSchema)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
 
 <link rel="preload" href="/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
