@@ -62,6 +62,7 @@ jobs:
       - name: Install Chromium
         run: |
           if ! find ~/.cache/puppeteer -name "chrome" -type f 2>/dev/null | grep -q .; then
+            rm -rf ~/.cache/puppeteer/chrome
             npx puppeteer browsers install chrome
           fi
 
