@@ -60,6 +60,12 @@ jobs:
           path: node_modules/.astro/chrome
           key: ${{ runner.os }}-astro-chrome-${{ steps.dep-hash.outputs.hash }}
 
+      - name: Verify Chromium binary
+        run: |
+          if [ -d node_modules/.astro/chrome ] && ! find node_modules/.astro/chrome -name "chrome" -type f 2>/dev/null | grep -q .; then
+            rm -rf node_modules/.astro/chrome
+          fi
+
       - name: Build site
         run: npm run build
         env:
