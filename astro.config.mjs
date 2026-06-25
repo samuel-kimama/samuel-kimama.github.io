@@ -56,7 +56,7 @@ export default defineConfig({
     icon({
       include: {
         mdi: ["linkedin", "github"],
-        lucide: ["download", "moon", "sun", "external-link"],
+        lucide: ["download", "moon", "sun", "external-link", "mail", "globe"],
       },
     }),
     pdf({

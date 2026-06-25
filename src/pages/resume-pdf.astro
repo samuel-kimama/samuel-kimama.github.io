@@ -1,10 +1,35 @@
 ---
+import { Icon } from "astro-icon/components";
 import { getResumeData } from "../data/resume";
 
 const { profile, strengths, technologies, timeline } = await getResumeData();
 const technologyLine = technologies.join(" • ");
 
 const formatContactUrl = (value: string) => value.replace(/^https?:\/\//, "");
+
+type ContactItem = { icon: string; href: string; label: string };
+const contactItems: ContactItem[] = [
+  profile.contact.email && {
+    icon: "lucide:mail",
+    href: `mailto:${profile.contact.email}`,
+    label: profile.contact.email,
+  },
+  profile.contact.linkedin && {
+    icon: "mdi:linkedin",
+    href: profile.contact.linkedin,
+    label: formatContactUrl(profile.contact.linkedin),
+  },
+  profile.contact.github && {
+    icon: "mdi:github",
+    href: profile.contact.github,
+    label: formatContactUrl(profile.contact.github),
+  },
+  profile.contact.website && {
+    icon: "lucide:globe",
+    href: profile.contact.website,
+    label: formatContactUrl(profile.contact.website),
+  },
+].filter(Boolean) as ContactItem[];
 ---
 
 <!doctype html>
@@ -119,14 +144,28 @@ const formatContactUrl = (value: string) => value.replace(/^https?:\/\//, "");
       }
 
       .contact {
-        text-align: right;
+        display: grid;
+        grid-template-columns: auto auto;
+        column-gap: 0.18in;
+        row-gap: 0.04in;
+        justify-content: end;
         font-size: 11px;
-        line-height: 1.6;
+        line-height: 1.4;
       }
 
-      .contact a {
+      .contact-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.05in;
         color: inherit;
         text-decoration: none;
+      }
+
+      .contact-icon {
+        width: 11px;
+        height: 11px;
+        color: var(--muted);
+        flex-shrink: 0;
       }
 
       .summary {
@@ -310,27 +349,12 @@ const formatContactUrl = (value: string) => value.replace(/^https?:\/\//, "");
           </p>
         </div>
         <div class="contact">
-          {profile.contact.email && (
-            <div>{profile.contact.email}</div>
-          )}
-          {profile.contact.linkedin && (
-            <div>
-              <a href={profile.contact.linkedin}
-                >{formatContactUrl(profile.contact.linkedin)}</a>
-            </div>
-          )}
-          {profile.contact.website && (
-            <div>
-              <a href={profile.contact.website}
-                >{formatContactUrl(profile.contact.website)}</a>
-            </div>
-          )}
-          {profile.contact.github && (
-            <div>
-              <a href={profile.contact.github}
-                >{formatContactUrl(profile.contact.github)}</a>
-            </div>
-          )}
+          {contactItems.map((item) => (
+            <a class="contact-item" href={item.href}>
+              <Icon name={item.icon} class="contact-icon" aria-hidden="true" />
+              <span>{item.label}</span>
+            </a>
+          ))}
         </div>
       </header>
 
