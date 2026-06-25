@@ -48,6 +48,7 @@ export default defineConfig({
         email: getEnv("EMAIL"),
         linkedin: getEnv("LINKEDIN"),
         website: getEnv("PUBLIC_SITE_URL"),
+        github: getEnv("GITHUB"),
       }),
     },
   },

@@ -4,6 +4,7 @@ declare const __RESUME_CONTACT__: {
   email?: string;
   linkedin?: string;
   website?: string;
+  github?: string;
 };
 
 type SocialLink = {
@@ -21,7 +22,7 @@ function formatMonth(value: string) {
   return monthFormatter.format(new Date(`${value}-01T00:00:00Z`));
 }
 
-const contactPlaceholders = new Set(["email", "EMAIL", "LINKEDIN", "PUBLIC_SITE_URL"]);
+const contactPlaceholders = new Set(["email", "EMAIL", "LINKEDIN", "PUBLIC_SITE_URL", "GITHUB"]);
 
 function resolveContactValue(fallback?: string, value?: string) {
   const resolved = value?.trim();
@@ -48,7 +49,7 @@ export async function getResumeData() {
       ...resume.profile.contact,
       email: resolveContactValue(resume.profile.contact.email, __RESUME_CONTACT__.email),
       linkedin: resolveContactValue(resume.profile.contact.linkedin, __RESUME_CONTACT__.linkedin),
-      github: resolveContactValue(resume.profile.contact.github),
+      github: resolveContactValue(resume.profile.contact.github, __RESUME_CONTACT__.github),
       website: resolveContactValue(resume.profile.contact.website, __RESUME_CONTACT__.website),
     },
   };
