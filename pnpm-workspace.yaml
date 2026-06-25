@@ -1,0 +1,5 @@
+allowBuilds:
+  astro-pdf: true
+  esbuild: true
+  puppeteer: true
+  sharp: true
