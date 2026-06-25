@@ -8,6 +8,11 @@ const { profile, strengths, technologies, timeline, stats } = await getResumeDat
 const recentTimeline = timeline.slice(0, 2);
 const additionalTimeline = timeline.slice(2);
 const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama-Resume.pdf";
+const formatContactUrl = (value: string) => value.replace(/^https?:\/\//, "");
+const metaLinks = [
+  profile.contact.github && { href: profile.contact.github, label: formatContactUrl(profile.contact.github) },
+  profile.contact.linkedin && { href: profile.contact.linkedin, label: formatContactUrl(profile.contact.linkedin) },
+].filter(Boolean) as { href: string; label: string }[];
 ---
 
 <BaseLayout title={`${profile.name} | Staff Frontend Engineer`} description={profile.summary}>
@@ -26,9 +31,12 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
         ))}
       </ul>
       <p class="meta-links" style="margin-top: 1.25rem; font-size: 0.9rem; color: var(--muted);">
-        <a href={profile.contact.github} target="_blank" rel="noreferrer me">github.com/samuelmburu</a>
-        <span aria-hidden="true">·</span>
-        <a href={profile.contact.linkedin} target="_blank" rel="noreferrer me">linkedin.com/in/samuelkimama</a>
+        {metaLinks.map((item, index) => (
+          <>
+            {index > 0 && <span aria-hidden="true">·</span>}
+            <a href={item.href} target="_blank" rel="noreferrer me">{item.label}</a>
+          </>
+        ))}
       </p>
       <aside class="availability-callout" aria-label="Role search">
         <p class="availability-callout__eyebrow">{siteContent.availabilityEyebrow}</p>
@@ -261,7 +269,7 @@ const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama
       <article class="panel">
         <h3>Is Samuel Kimama available for new roles?</h3>
         <p style="margin-top: 0.75rem;">
-          Yes. Samuel Kimama (GitHub: <a href={profile.contact.github} target="_blank" rel="noreferrer">samuelmburu</a>) is targeting remote Staff-level frontend engineering roles with broad product and platform ownership. He is open to roles where frontend architecture, cross-functional leadership, and engineering standards are first-class concerns.
+          Yes. Samuel Kimama{profile.contact.github && <> (GitHub: <a href={profile.contact.github} target="_blank" rel="noreferrer">samuelmburu</a>)</>} is targeting remote Staff-level frontend engineering roles with broad product and platform ownership. He is open to roles where frontend architecture, cross-functional leadership, and engineering standards are first-class concerns.
         </p>
       </article>
       <article class="panel">

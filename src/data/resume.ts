@@ -1,5 +1,16 @@
 import { getEntry } from "astro:content";
 
+declare const __RESUME_CONTACT__: {
+  email?: string;
+  linkedin?: string;
+  website?: string;
+};
+
+type SocialLink = {
+  label: string;
+  href: string;
+};
+
 const monthFormatter = new Intl.DateTimeFormat("en-US", {
   month: "short",
   year: "numeric",
@@ -10,6 +21,19 @@ function formatMonth(value: string) {
   return monthFormatter.format(new Date(`${value}-01T00:00:00Z`));
 }
 
+const contactPlaceholders = new Set(["email", "EMAIL", "LINKEDIN", "PUBLIC_SITE_URL"]);
+
+function resolveContactValue(fallback?: string, value?: string) {
+  const resolved = value?.trim();
+  const defaultValue = fallback?.trim() ?? "";
+
+  if (resolved) {
+    return resolved;
+  }
+
+  return contactPlaceholders.has(defaultValue) ? "" : defaultValue;
+}
+
 export async function getResumeData() {
   const entry = await getEntry("resume", "resume");
 
@@ -18,13 +42,22 @@ export async function getResumeData() {
   }
 
   const resume = entry.data;
-  const profile = resume.profile;
+  const profile = {
+    ...resume.profile,
+    contact: {
+      ...resume.profile.contact,
+      email: resolveContactValue(resume.profile.contact.email, __RESUME_CONTACT__.email),
+      linkedin: resolveContactValue(resume.profile.contact.linkedin, __RESUME_CONTACT__.linkedin),
+      github: resolveContactValue(resume.profile.contact.github),
+      website: resolveContactValue(resume.profile.contact.website, __RESUME_CONTACT__.website),
+    },
+  };
   const strengths = resume.core_strengths;
   const technologies = resume.technologies;
   const socialLinks = [
-    { label: "LinkedIn", href: profile.contact.linkedin },
-    { label: "GitHub", href: profile.contact.github },
-  ];
+    profile.contact.linkedin && { label: "LinkedIn", href: profile.contact.linkedin },
+    profile.contact.github && { label: "GitHub", href: profile.contact.github },
+  ].filter(Boolean) as SocialLink[];
   const timeline = resume.experience.map((item) => ({
     period: `${formatMonth(item.start)} – ${formatMonth(item.end)}`,
     role: item.title,

@@ -13,7 +13,8 @@ const resume = defineCollection({
       contact: z.object({
         email: z.string(),
         linkedin: z.string(),
-        github: z.string(),
+        github: z.string().optional(),
+        website: z.string().optional(),
       }),
       summary: z.string(),
     }),

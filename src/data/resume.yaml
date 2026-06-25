@@ -4,9 +4,10 @@ profile:
   level: Staff / Principal
   location: Remote
   contact:
-    email: email
-    linkedin: https://linkedin.com/in/samuelkimama
-    github: https://github.com/samuelmburu
+    github: GITHUB
+    email: EMAIL
+    linkedin: LINKEDIN
+    website: PUBLIC_SITE_URL
   summary: >
     Samuel Kimama is a Staff Frontend Engineer with 16+ years of experience leading architecture across product, platform, and design boundaries. He builds resilient frontend systems, defines scalable engineering patterns, and aligns cross-functional teams to ship complex products faster with higher quality — known for creating organizational leverage through standards, mentoring, and technical direction.
 

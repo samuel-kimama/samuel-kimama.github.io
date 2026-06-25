@@ -3,6 +3,8 @@ import { getResumeData } from "../data/resume";
 
 const { profile, strengths, technologies, timeline } = await getResumeData();
 const technologyLine = technologies.join(" • ");
+
+const formatContactUrl = (value: string) => value.replace(/^https?:\/\//, "");
 ---
 
 <!doctype html>
@@ -308,19 +310,25 @@ const technologyLine = technologies.join(" • ");
           </p>
         </div>
         <div class="contact">
-          {profile.contact.email !== "email" && (
+          {profile.contact.email && (
             <div>{profile.contact.email}</div>
           )}
           {profile.contact.linkedin && (
             <div>
               <a href={profile.contact.linkedin}
-                >{profile.contact.linkedin.replace("https://", "")}</a>
+                >{formatContactUrl(profile.contact.linkedin)}</a>
+            </div>
+          )}
+          {profile.contact.website && (
+            <div>
+              <a href={profile.contact.website}
+                >{formatContactUrl(profile.contact.website)}</a>
             </div>
           )}
           {profile.contact.github && (
             <div>
               <a href={profile.contact.github}
-                >{profile.contact.github.replace("https://", "")}</a>
+                >{formatContactUrl(profile.contact.github)}</a>
             </div>
           )}
         </div>
