@@ -46,9 +46,9 @@ export default defineConfig({
     define: {
       __RESUME_CONTACT__: JSON.stringify({
         email: getEnv("EMAIL"),
-        linkedin: getEnv("LINKEDIN"),
+        linkedin: getEnv("LINKEDIN_PROFILE_URL"),
         website: getEnv("PUBLIC_SITE_URL"),
-        github: getEnv("GITHUB"),
+        github: getEnv("GH_PROFILE_URL"),
       }),
     },
   },

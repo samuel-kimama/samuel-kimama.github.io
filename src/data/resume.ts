@@ -22,7 +22,7 @@ function formatMonth(value: string) {
   return monthFormatter.format(new Date(`${value}-01T00:00:00Z`));
 }
 
-const contactPlaceholders = new Set(["email", "EMAIL", "LINKEDIN", "PUBLIC_SITE_URL", "GITHUB"]);
+const contactPlaceholders = new Set(["EMAIL", "LINKEDIN_PROFILE_URL", "PUBLIC_SITE_URL", "GH_PROFILE_URL"]);
 
 function resolveContactValue(fallback?: string, value?: string) {
   const resolved = value?.trim();

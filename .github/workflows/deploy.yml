@@ -46,16 +46,23 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Setup Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
       - name: Build site
         run: npm run build
         env:
           EMAIL: ${{ secrets.EMAIL }}
-          LINKEDIN: ${{ secrets.LINKEDIN }}
+          LINKEDIN_PROFILE_URL: ${{ secrets.LINKEDIN_PROFILE_URL }}
+          GH_PROFILE_URL: ${{ secrets.GH_PROFILE_URL }}
           PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL || vars.PUBLIC_SITE_URL || 'https://samuel-kimama.github.io' }}
-          # astro-pdf uses puppeteer to print the resume PDF. Pointing puppeteer
-          # at the system Chrome avoids downloading a browser at build time —
-          # ubuntu-latest has google-chrome pre-installed.
-          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
+          # astro-pdf uses puppeteer to print the resume PDF. setup-chrome
+          # provisions a known-good Chrome binary; this is more reliable than
+          # depending on whatever the runner image happens to ship today.
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
