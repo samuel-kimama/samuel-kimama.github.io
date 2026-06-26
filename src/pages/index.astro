@@ -217,6 +217,29 @@ const metaLinks = [
         <div class="project-grid">
           {siteContent.projects.map((project) => {
             const isExternal = project.href?.startsWith("http");
+            const media = "media" in project ? project.media : null;
+            const mediaEl = media && (
+              <>
+                <span class="project-card__media-frame">
+                  <video
+                    class="project-card__media"
+                    src={media.src}
+                    muted
+                    playsinline
+                    preload="metadata"
+                    controlslist="nodownload nofullscreen noremoteplayback"
+                    disablepictureinpicture
+                    disableRemotePlayback
+                    aria-label={media.alt}
+                    data-project-demo
+                  />
+                  <span class="project-card__media-cover" aria-hidden="true" />
+                </span>
+                <span class="project-card__media-hint" aria-hidden="true">
+                  Hover to replay
+                </span>
+              </>
+            );
             return project.href ? (
               <a
                 href={project.href}
@@ -231,6 +254,7 @@ const metaLinks = [
                   {project.name}
                   {isExternal && <Icon name="lucide:external-link" size="0.9em" aria-hidden="true" style="margin-left: 0.35em; vertical-align: middle; opacity: 0.5;" />}
                 </h3>
+                {mediaEl}
                 <p style="margin-top: 0.75rem;">{project.description}</p>
               </a>
             ) : (
@@ -240,6 +264,7 @@ const metaLinks = [
                   <span>{project.year}</span>
                 </div>
                 <h3>{project.name}</h3>
+                {mediaEl}
                 <p style="margin-top: 0.75rem;">{project.description}</p>
               </article>
             );
@@ -249,5 +274,19 @@ const metaLinks = [
     )
   }
 
-
 </BaseLayout>
+
+<script>
+  const videos = document.querySelectorAll<HTMLVideoElement>("[data-project-demo]");
+  if (videos.length > 0 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const replay = (video: HTMLVideoElement) => {
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    };
+    videos.forEach((video) => {
+      replay(video);
+      const card = video.closest(".project-card");
+      card?.addEventListener("mouseenter", () => replay(video));
+    });
+  }
+</script>
