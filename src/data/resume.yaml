@@ -9,14 +9,15 @@ profile:
     linkedin: LINKEDIN_PROFILE_URL
     website: PUBLIC_SITE_URL
   summary: >
-    Samuel Kimama is a Staff Frontend Engineer with 16+ years of experience leading architecture across product, platform, and design boundaries. He builds resilient frontend systems, defines scalable engineering patterns, and aligns cross-functional teams to ship complex products faster with higher quality — known for creating organizational leverage through standards, mentoring, and technical direction.
+    Frontend engineer, 16 years in — most of it operating at Staff scope as the first or sole frontend lead. I architect the platform layer: design systems, component contracts, BFFs, and the migration paths between architectures. Recent work: decomposed a Southwest Airlines monolith into Single-SPA micro-frontends; cut TTFB 67% on a B2B analytics platform; first UI engineer at WitnessAI, where I designed the browser-side interception layer for live AI traffic that's covered by US patent 12,587,529.
 
 core_strengths:
-  - Frontend Architecture & UI Systems
-  - Cross-Functional Leadership (Product, ML, Backend)
-  - Developer Productivity & Platform Leverage
-  - Performance, A11y, and Quality at Scale
-  - Design Systems & Scalable Component Models
+  - React + TypeScript architecture for multi-app monorepos
+  - Micro-frontend boundaries (Single-SPA) and BFF contracts (GraphQL)
+  - Design systems and component APIs that survive team scale
+  - URL-driven state — shareable deep links, reload-safe workflows, URL is the source of truth
+  - Performance budgets, Core Web Vitals, and tech choices that make accessibility easier — keyboard navigation, focus management, semantic HTML
+  - "Legacy migrations: AngularJS → React, monolith → micro-frontends"
 
 experience:
   - company: WITNESS AI

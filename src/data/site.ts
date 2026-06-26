@@ -1,12 +1,12 @@
 export const siteContent = {
   about: [
-    "My work sits where product complexity, team scale, and frontend architecture collide. I'm the engineer companies call when they need stronger foundations: clear component models, reliable API contracts, and patterns that hold up as teams grow.",
-    "Across SaaS platforms, enterprise modernization, ML-enabled products, and high-scale consumer systems, I work beyond feature delivery. I define architecture, align with backend and product partners, raise quality standards, and make the frontend a capable, first-class layer.",
+    "My work sits where product complexity, team scale, and frontend architecture collide. Companies call me when they need stronger foundations: component contracts, BFFs that absorb backend churn, and design systems that survive team growth.",
+    "Across SaaS platforms, enterprise modernization, ML-enabled products, and consumer systems at LinkedIn scale, I work beyond feature delivery. I define architecture, negotiate API contracts with backend partners (GraphQL/BFF where it earns its keep), raise the performance and accessibility bar, and make the frontend a first-class layer instead of a thin client.",
     "The throughline is leverage. Strong systems compound — reducing friction for users and drag for engineers, and making future product bets easier to execute."
   ],
   availabilityEyebrow: "Open to roles",
   availability:
-    "Targeting remote Staff frontend roles with broad product and platform ownership.",
+    "Open to remote frontend roles with end-to-end product and platform ownership.",
   expertise: [
     {
       title: "Architecture",
@@ -31,7 +31,7 @@ export const siteContent = {
       year: "2026",
       href: "https://k-leumas.github.io/etch-extension/",
       description:
-        "Bookmark and navigate moments in LLM conversations. A selectorless, geometry-based architecture keeps bookmarks resilient to UI changes across Claude and ChatGPT."
+        "Bookmark and navigate moments in LLM conversations. A selectorless, geometry-based architecture keeps bookmarks resilient to UI changes across Claude and ChatGPT. Same problem space as my WitnessAI work — durable hooks into AI chat UIs you don't control."
     },
     {
       name: "QueQue",

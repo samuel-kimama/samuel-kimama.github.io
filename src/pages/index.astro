@@ -8,6 +8,9 @@ const { profile, strengths, technologies, timeline } = await getResumeData();
 const recentTimeline = timeline.slice(0, 2);
 const additionalTimeline = timeline.slice(2);
 const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama-Resume.pdf";
+const patentLabel = "US patent 12,587,529";
+const patentHref = "https://patents.google.com/patent/US12587529B2/en";
+const summaryParts = profile.summary.split(patentLabel);
 const metaLinks = [
   profile.contact.github && {
     href: profile.contact.github,
@@ -25,10 +28,15 @@ const metaLinks = [
 <BaseLayout title={`${profile.name} | Staff Frontend Engineer`} description={profile.summary}>
   <section class="hero u-screen-fit" id="home">
     <div>
-      <p class="hero-kicker">Hi, I&apos;m</p>
       <h1>Samuel Kimama,</h1>
-      <h2 class="hero-subtitle">I design scalable frontend systems that help teams ship with speed and quality.</h2>
-      <p class="lead" style="margin-top: 1.5rem;">{profile.summary}</p>
+      <h2 class="hero-subtitle">I architect frontend systems built to be inherited.</h2>
+      <p class="lead" style="margin-top: 1.5rem;">
+        {summaryParts.length > 1 ? (
+          <>
+            {summaryParts[0]}<a href={patentHref} target="_blank" rel="noreferrer">{patentLabel}</a>{summaryParts.slice(1).join(patentLabel)}
+          </>
+        ) : profile.summary}
+      </p>
       <p class="meta-links" style="margin-top: 1.25rem; color: var(--muted);" aria-label="Profile links">
         {metaLinks.map((item) => (
           <a href={item.href} target="_blank" rel="noreferrer me" aria-label={item.label}>
@@ -47,13 +55,23 @@ const metaLinks = [
     <div class="section-heading">
       <div>
         <span class="eyebrow">About</span>
-        <h2>Architecture, leverage, and complex product work.</h2>
+        <h2>Architecture, migrations, and the platform layer.</h2>
       </div>
     </div>
     <div class="resume-grid" style="margin-top: 1rem;">
       <article class="panel">
         {siteContent.about.map((paragraph) => (
-          <p style="margin-top: 1rem;">{paragraph}</p>
+          <p style="margin-top: 1rem;">
+            {typeof paragraph === "string" ? paragraph : (
+              <>
+                {paragraph.text}
+                <a href={paragraph.link.href} target="_blank" rel="noreferrer">
+                  {paragraph.link.label}
+                </a>
+                {paragraph.suffix}
+              </>
+            )}
+          </p>
         ))}
       </article>
       <article class="panel">
