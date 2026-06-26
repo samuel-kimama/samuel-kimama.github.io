@@ -1,6 +1,5 @@
 import { spawn } from 'node:child_process';
 import fsSync from 'node:fs';
-import fs from 'node:fs/promises';
 import net from 'node:net';
 import path from 'node:path';
 import process from 'node:process';
@@ -15,6 +14,9 @@ const {
   buildScript,
   buildCommand,
   buildEnvOverrides,
+  devServerEnabled,
+  devCommand,
+  devCommandSource,
 } = (() => {
   const ignores = [];
   const extraRoot = [];
@@ -22,6 +24,8 @@ const {
   const rest = [];
   const envOverrides = {};
   let bscript = null;
+  let devServer = false;
+  let devCmd = null;
   const collectList = (raw) =>
     raw
       .split(',')
@@ -55,6 +59,14 @@ const {
     } else if ((flag = readFlag(arg, '--build-script', i))) {
       bscript = path.resolve(flag.value);
       i = flag.nextIndex;
+    } else if (arg === '--dev-server') {
+      devServer = true;
+    } else if (arg === '--no-dev-server') {
+      devServer = false;
+    } else if ((flag = readFlag(arg, '--dev-command', i))) {
+      devServer = true;
+      devCmd = splitCommand(flag.value);
+      i = flag.nextIndex;
     } else if (/^[A-Za-z_][A-Za-z0-9_]*=.*/.test(arg)) {
       const eq = arg.indexOf('=');
       const rawKey = arg.slice(0, eq);
@@ -79,6 +91,10 @@ const {
       }
     }
   }
+  const inferredDev = devCmd
+    ? { command: devCmd, source: '--dev-command' }
+    : inferDevCommand(repoRoot);
+
   return {
     ignorePaths: ignores,
     extraRootConfigFiles: extraRoot,
@@ -91,8 +107,54 @@ const {
           ? [process.execPath, bscript]
           : [detectPackageManager(repoRoot), 'run', 'build'],
     buildEnvOverrides: envOverrides,
+    devServerEnabled: devServer,
+    devCommand: inferredDev?.command ?? [],
+    devCommandSource: inferredDev?.source ?? '',
   };
 })();
+
+function splitCommand(value) {
+  const tokens = [];
+  let current = '';
+  let quote = '';
+  let escaped = false;
+
+  for (const char of value) {
+    if (escaped) {
+      current += char;
+      escaped = false;
+      continue;
+    }
+    if (char === '\\') {
+      escaped = true;
+      continue;
+    }
+    if (quote) {
+      if (char === quote) {
+        quote = '';
+      } else {
+        current += char;
+      }
+      continue;
+    }
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+    if (/\s/.test(char)) {
+      if (current) {
+        tokens.push(current);
+        current = '';
+      }
+      continue;
+    }
+    current += char;
+  }
+
+  if (escaped) current += '\\';
+  if (current) tokens.push(current);
+  return tokens;
+}
 
 function detectPackageManager(root) {
   const has = (f) => fsSync.existsSync(path.join(root, f));
@@ -101,6 +163,71 @@ function detectPackageManager(root) {
   if (has('bun.lockb') || has('bun.lock')) return 'bun';
   return 'npm';
 }
+
+function inferDevCommand(root) {
+  const pkg = readPackageJson(root);
+  const scripts = pkg?.scripts && typeof pkg.scripts === 'object' ? pkg.scripts : {};
+  const packageManager = detectPackageManager(root);
+
+  for (const name of ['dev', 'develop', 'serve']) {
+    if (typeof scripts[name] === 'string') {
+      return { command: [packageManager, 'run', name], source: `package script "${name}"` };
+    }
+  }
+
+  if (typeof scripts.start === 'string' && looksLikeDevScript(scripts.start)) {
+    return { command: [packageManager, 'run', 'start'], source: 'package script "start"' };
+  }
+
+  const deps = {
+    ...(pkg?.dependencies ?? {}),
+    ...(pkg?.devDependencies ?? {}),
+  };
+  const frameworkCommands = [
+    ['astro', 'astro', ['dev']],
+    ['vite', 'vite', []],
+    ['next', 'next', ['dev']],
+    ['nuxt', 'nuxt', ['dev']],
+  ];
+
+  for (const [dependency, bin, args] of frameworkCommands) {
+    if (!deps[dependency]) continue;
+    const command = localBinCommand(root, bin, args);
+    if (command) {
+      return { command, source: `${dependency} dependency` };
+    }
+  }
+
+  if (deps['@sveltejs/kit']) {
+    const command = localBinCommand(root, 'vite', ['dev']);
+    if (command) {
+      return { command, source: '@sveltejs/kit dependency' };
+    }
+  }
+
+  return null;
+}
+
+function readPackageJson(root) {
+  try {
+    return JSON.parse(fsSync.readFileSync(path.join(root, 'package.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function looksLikeDevScript(script) {
+  return /\b(astro|vite|next|nuxt|remix|svelte-kit)\b.*\b(dev|serve)\b|\b(dev|serve)\b/.test(
+    script,
+  );
+}
+
+function localBinCommand(root, bin, args) {
+  const binPath = path.join(root, 'node_modules', '.bin', bin);
+  if (!fsSync.existsSync(binPath)) return null;
+  return [binPath, ...args];
+}
+
 const debounceMs = Number.parseInt(process.env.BUILD_DASHBOARD_DEBOUNCE ?? '150', 10);
 const fallbackPollMs = Number.parseInt(process.env.BUILD_DASHBOARD_INTERVAL ?? '1000', 10);
 const watchmanName = `build-dashboard-${process.pid}`;
@@ -152,6 +279,10 @@ const state = {
   worktree: '',
   defineVars: [],
   builtSha: '',
+  devServerStatus: 'off',
+  devServerUrl: '',
+  devServerMessage: '',
+  devServerRestarts: 0,
 };
 
 let repoMeta = null;
@@ -169,6 +300,9 @@ let pollTimer = null;
 let lastFallbackStatusSnapshot = '';
 let inputStream = null;
 let inputFd = null;
+let devServerProcess = null;
+let devServerStopping = null;
+const intentionallyStoppedDevServers = new WeakSet();
 
 const _stripAnsiRe = new RegExp(String.fromCharCode(27) + '\\[[0-9;]*m', 'g');
 
@@ -191,6 +325,9 @@ async function main() {
 
     setupTerminal();
     render();
+    if (devServerEnabled) {
+      startDevServer();
+    }
 
     spinnerTimer = setInterval(() => {
       if (!state.buildRunning) return;
@@ -223,6 +360,7 @@ async function main() {
   } catch (error) {
     await shutdownWatchman();
     stopFallbackLoop();
+    await stopDevServer();
     teardownTerminal();
     console.error(error instanceof Error ? (error.stack ?? error.message) : String(error));
     process.exit(1);
@@ -280,6 +418,7 @@ async function requestStop() {
   state.stopRequested = true;
   await shutdownWatchman();
   stopFallbackLoop();
+  await stopDevServer();
   teardownTerminal();
   process.exit(0);
 }
@@ -289,6 +428,7 @@ async function restartSelf() {
   state.stopRequested = true;
   await shutdownWatchman();
   stopFallbackLoop();
+  await stopDevServer();
   teardownTerminal();
   const child = spawn(process.execPath, process.argv.slice(1), {
     stdio: 'inherit',
@@ -301,6 +441,7 @@ function handleFatal(error) {
   void (async () => {
     await shutdownWatchman();
     stopFallbackLoop();
+    await stopDevServer();
     teardownTerminal();
     console.error(error instanceof Error ? (error.stack ?? error.message) : String(error));
     process.exit(1);
@@ -349,6 +490,13 @@ function handleInput(chunk) {
     if (!state.buildRunning && !state.stopRequested) {
       pendingFiles.add('(manual)');
       scheduleBuild();
+    }
+    return;
+  }
+
+  if (chunk === 'd' || chunk === 'D') {
+    if (devServerEnabled && !state.stopRequested) {
+      void restartDevServer();
     }
     return;
   }
@@ -745,6 +893,145 @@ function runCommand(command, cwd, envOverrides = {}) {
   });
 }
 
+function startDevServer() {
+  if (devServerProcess || devServerStopping || state.stopRequested) return;
+  if (devCommand.length === 0) {
+    state.devServerStatus = 'error';
+    state.devServerMessage = 'no dev script inferred';
+    render();
+    return;
+  }
+
+  const dotEnv = loadDotEnv(path.join(repoRoot, '.env.local'));
+  state.devServerStatus = 'starting';
+  state.devServerMessage = 'starting';
+  state.devServerUrl = '';
+  render();
+
+  const child = spawn(devCommand[0], devCommand.slice(1), {
+    cwd: repoRoot,
+    detached: true,
+    env: { ...dotEnv, ...process.env, ...buildEnvOverrides },
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+
+  devServerProcess = child;
+  devServerStopping = null;
+  let latestOutput = '';
+
+  const onOutput = (chunk) => {
+    const text = stripAnsi(String(chunk));
+    latestOutput = tailLines(`${latestOutput}\n${text}`, 4);
+    const url = extractLocalUrl(text);
+    if (url) {
+      state.devServerUrl = url;
+      state.devServerStatus = 'running';
+      state.devServerMessage = 'ready';
+    } else if (state.devServerStatus === 'starting') {
+      state.devServerMessage = tailLines(text, 1) || 'starting';
+    }
+    render();
+  };
+
+  child.stdout.on('data', onOutput);
+  child.stderr.on('data', onOutput);
+  child.on('error', (error) => {
+    if (devServerProcess === child) {
+      devServerProcess = null;
+    }
+    if (intentionallyStoppedDevServers.has(child) || state.stopRequested) return;
+    state.devServerStatus = 'error';
+    state.devServerMessage = error.message;
+    render();
+  });
+  child.on('close', (code, signal) => {
+    if (devServerProcess === child) {
+      devServerProcess = null;
+    }
+    if (intentionallyStoppedDevServers.has(child) || state.stopRequested) return;
+    state.devServerStatus = code === 0 ? 'stopped' : 'error';
+    state.devServerMessage =
+      code === 0 ? 'stopped' : latestOutput || `exited ${code ?? signal ?? 'unknown'}`;
+    render();
+  });
+}
+
+async function restartDevServer() {
+  if (devServerStopping) return;
+  state.devServerRestarts += 1;
+  await stopDevServer();
+  if (!state.stopRequested) {
+    startDevServer();
+  }
+}
+
+function stopDevServer() {
+  if (devServerStopping) return devServerStopping;
+
+  devServerStopping = new Promise((resolve) => {
+    const child = devServerProcess;
+    if (!child) {
+      devServerStopping = null;
+      resolve();
+      return;
+    }
+
+    state.devServerStatus = 'stopping';
+    state.devServerMessage = 'stopping';
+    intentionallyStoppedDevServers.add(child);
+    render();
+
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      child.off('close', finish);
+      if (devServerProcess === child) {
+        devServerProcess = null;
+      }
+      devServerStopping = null;
+      if (!state.stopRequested) {
+        state.devServerStatus = 'stopped';
+        state.devServerMessage = 'stopped';
+        render();
+      }
+      resolve();
+    };
+
+    const timer = setTimeout(() => {
+      killProcessGroup(child, 'SIGKILL');
+      finish();
+    }, 3_000);
+
+    child.once('close', finish);
+    killProcessGroup(child, 'SIGTERM');
+  });
+
+  return devServerStopping;
+}
+
+function killProcessGroup(child, signal) {
+  try {
+    process.kill(-child.pid, signal);
+  } catch {
+    try {
+      child.kill(signal);
+    } catch {
+      // Process already exited.
+    }
+  }
+}
+
+function extractLocalUrl(text) {
+  const urls = text.match(/https?:\/\/[^\s]+/g) ?? [];
+  return (
+    urls.find((url) => /localhost|127\.0\.0\.1|\[::1\]/.test(url)) ??
+    urls[0] ??
+    ''
+  ).replace(/[),.;]+$/, '');
+}
+
 function sendWatchmanCommand(command) {
   return new Promise((resolve, reject) => {
     if (!watchmanSocket || watchmanSocket.destroyed) {
@@ -811,12 +1098,6 @@ async function pollFallbackLoop() {
   scheduleBuild();
 }
 
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
 function render() {
   const width = process.stdout.columns || 80;
   const height = process.stdout.rows || 24;
@@ -844,6 +1125,9 @@ function render() {
   lines.push(
     `${dim('command')} ${envPrefix ? `${envPrefix} ` : ''}${buildCommand.join(' ')}`,
   );
+  if (devServerEnabled) {
+    lines.push(formatDevServerLine(width));
+  }
   lines.push(formatVersionLine());
   lines.push(`${statusColor}[${statusLabel}]\x1b[0m ${truncate(state.message, width - 12)}`);
   lines.push('');
@@ -876,12 +1160,28 @@ function render() {
   lines.push('');
   lines.push(
     dim(
-      'watching source files only; tests/docs ignored | q quit  b build  r restart  c clear  e errors',
+      `watching source files only; tests/docs ignored | q quit  b build${devServerEnabled ? '  d dev' : ''}  r restart  c clear  e errors`,
     ),
   );
 
   process.stdout.write('\x1b[H\x1b[2J');
   process.stdout.write(lines.slice(0, height).join('\n'));
+}
+
+function formatDevServerLine(width) {
+  const status = state.devServerStatus.toUpperCase();
+  const statusColor =
+    state.devServerStatus === 'running'
+      ? statusColors.ok
+      : state.devServerStatus === 'error'
+        ? statusColors.error
+        : statusColors.building;
+  const target = state.devServerUrl || state.devServerMessage || 'starting';
+  const restarts = state.devServerRestarts > 0 ? `  ${dim(`restarts ${state.devServerRestarts}`)}` : '';
+  const command = devCommand.length ? devCommand.join(' ') : 'unavailable';
+  const source = devCommandSource ? ` ${dim(`(${devCommandSource})`)}` : '';
+  const details = `${command}${source}  ${statusColor}[${status}]\x1b[0m ${target}${restarts}`;
+  return `${dim('dev')}     ${truncate(details, width - 8 + ansiVisibleDelta(details))}`;
 }
 
 function tableHeader(width) {
