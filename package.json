@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "build:dashboard": "node scripts/build-dashboard.mjs",
     "preview": "astro preview",
     "secrets:sync": "node scripts/sync-gh-secrets.mjs",
     "check": "astro check"
