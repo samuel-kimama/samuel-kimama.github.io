@@ -271,6 +271,7 @@ const state = {
   history: [],
   lastErrorLog: '',
   showErrorPane: true,
+  errorScrollOffset: 0,
   buildRunning: false,
   stopRequested: false,
   spinnerIndex: 0,
@@ -476,14 +477,50 @@ function handleInput(chunk) {
   if (chunk === 'c' || chunk === 'C') {
     state.history = [];
     state.lastErrorLog = '';
+    state.errorScrollOffset = 0;
     render();
     return;
   }
 
   if (chunk === 'e' || chunk === 'E') {
     state.showErrorPane = !state.showErrorPane;
+    state.errorScrollOffset = 0;
     render();
     return;
+  }
+
+  if (state.showErrorPane && state.lastErrorLog) {
+    if (chunk === '\x1b[A') {
+      scrollError(-1);
+      return;
+    }
+
+    if (chunk === '\x1b[B') {
+      scrollError(1);
+      return;
+    }
+
+    if (chunk === '\x1b[5~') {
+      scrollError(-Math.max(1, (process.stdout.rows || 24) - 10));
+      return;
+    }
+
+    if (chunk === '\x1b[6~') {
+      scrollError(Math.max(1, (process.stdout.rows || 24) - 10));
+      return;
+    }
+
+    if (chunk === '\x1b[H' || chunk === '\x1b[1~') {
+      state.errorScrollOffset = 0;
+      render();
+      return;
+    }
+
+    if (chunk === '\x1b[F' || chunk === '\x1b[4~') {
+      state.errorScrollOffset = Number.POSITIVE_INFINITY;
+      render();
+      return;
+    }
   }
 
   if (chunk === 'b' || chunk === 'B') {
@@ -716,11 +753,14 @@ async function flushPendingBuild() {
     state.status = 'ok';
     state.builtSha = buildStartSha;
     state.message = `${state.lastUpdateAt} ${summary}`;
+    state.lastErrorLog = '';
+    state.errorScrollOffset = 0;
   } else {
     state.status = 'error';
     state.showErrorPane = true;
     state.message = `${state.lastUpdateAt} exit ${code} ${summary}`;
-    state.lastErrorLog = tailLines(output, 16);
+    state.errorScrollOffset = 0;
+    state.lastErrorLog = output.trimEnd();
     if (!state.lastErrorLog) {
       state.lastErrorLog = [
         `Build command failed with exit ${code}.`,
@@ -1098,10 +1138,15 @@ async function pollFallbackLoop() {
   scheduleBuild();
 }
 
+function scrollError(delta) {
+  state.errorScrollOffset = Math.max(0, state.errorScrollOffset + delta);
+  render();
+}
+
 function render() {
   const width = process.stdout.columns || 80;
   const height = process.stdout.rows || 24;
-  const errorPaneLines = state.showErrorPane && state.lastErrorLog ? 8 : 0;
+  const showFullError = state.showErrorPane && state.lastErrorLog;
 
   const statusLabel =
     state.status === 'building'
@@ -1131,29 +1176,25 @@ function render() {
   lines.push(formatVersionLine());
   lines.push(`${statusColor}[${statusLabel}]\x1b[0m ${truncate(state.message, width - 12)}`);
   lines.push('');
-  lines.push(tableHeader(width));
 
-  const headerSize = lines.length;
-  const historyRows = Math.max(
-    5,
-    height - headerSize - 2 - (errorPaneLines > 0 ? errorPaneLines + 2 : 0),
-  );
-  const history = state.history.slice(-historyRows);
+  if (showFullError) {
+    const footerRows = 2;
+    const availableRows = Math.max(5, height - lines.length - footerRows);
+    lines.push(...formatErrorView(width, availableRows));
+  } else {
+    lines.push(tableHeader(width));
 
-  const latestEntry = history.at(-1) ?? null;
-  for (const entry of history) {
-    lines.push(formatEntry(entry, width, { isLatest: entry === latestEntry }));
-  }
+    const headerSize = lines.length;
+    const historyRows = Math.max(5, height - headerSize - 2);
+    const history = state.history.slice(-historyRows);
 
-  while (lines.length < headerSize + historyRows) {
-    lines.push('');
-  }
+    const latestEntry = history.at(-1) ?? null;
+    for (const entry of history) {
+      lines.push(formatEntry(entry, width, { isLatest: entry === latestEntry }));
+    }
 
-  if (errorPaneLines) {
-    lines.push('');
-    lines.push(`${bold('Last Error')}${dim('  (toggle with e)')}`);
-    for (const line of state.lastErrorLog.split('\n').slice(-errorPaneLines)) {
-      lines.push(truncate(line, width));
+    while (lines.length < headerSize + historyRows) {
+      lines.push('');
     }
   }
 
@@ -1166,6 +1207,73 @@ function render() {
 
   process.stdout.write('\x1b[H\x1b[2J');
   process.stdout.write(lines.slice(0, height).join('\n'));
+}
+
+function formatErrorView(width, availableRows) {
+  const border = (text) => `\x1b[38;5;160m${text}\x1b[0m`;
+  const titleColor = (text) => `\x1b[1;37;48;5;160m${text}\x1b[0m`;
+  const metaColor = (text) => `\x1b[1;38;5;223m${text}\x1b[0m`;
+  const safeWidth = Math.max(24, width);
+  const innerWidth = Math.max(10, safeWidth - 4);
+  const contentRows = Math.max(1, availableRows - 2);
+  const contentLines = formatErrorContentLines(state.lastErrorLog, innerWidth);
+  const maxOffset = Math.max(0, contentLines.length - contentRows);
+
+  if (!Number.isFinite(state.errorScrollOffset)) {
+    state.errorScrollOffset = maxOffset;
+  } else {
+    state.errorScrollOffset = Math.min(Math.max(0, state.errorScrollOffset), maxOffset);
+  }
+
+  const start = state.errorScrollOffset;
+  const visible = contentLines.slice(start, start + contentRows);
+  const end = Math.min(contentLines.length, start + contentRows);
+  const title = truncate(
+    contentLines.length === 0
+      ? ' ERROR OUTPUT  0/0 '
+      : ` ERROR OUTPUT  ${start + 1}-${end}/${contentLines.length} `,
+    safeWidth - 2,
+  );
+  const help = truncate(' e table  Up/Down scroll  PgUp/PgDn page  Home/End ', safeWidth - 2);
+  const topFill = Math.max(0, safeWidth - stripAnsi(title).length - 2);
+  const bottomFill = Math.max(0, safeWidth - stripAnsi(help).length - 2);
+  const rows = [
+    `${border('┌')}${titleColor(title)}${border('─'.repeat(topFill))}${border('┐')}`,
+  ];
+
+  for (let i = 0; i < contentRows; i++) {
+    const raw = visible[i] ?? '';
+    rows.push(`${border('│')} ${padRight(raw, innerWidth)} ${border('│')}`);
+  }
+
+  rows.push(
+    `${border('└')}${metaColor(help)}${border('─'.repeat(bottomFill))}${border('┘')}`,
+  );
+  return rows;
+}
+
+function formatErrorContentLines(text, width) {
+  const source = stripAnsi(text)
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/\t/g, '  ');
+  const result = [];
+
+  for (const line of source.split('\n')) {
+    if (line.length === 0) {
+      result.push('');
+      continue;
+    }
+
+    let rest = line;
+    while (rest.length > width) {
+      result.push(rest.slice(0, width));
+      rest = rest.slice(width);
+    }
+    result.push(rest);
+  }
+
+  return result.length ? result : [''];
 }
 
 function formatDevServerLine(width) {
