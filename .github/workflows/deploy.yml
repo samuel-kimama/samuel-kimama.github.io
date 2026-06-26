@@ -20,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -37,7 +37,7 @@ jobs:
 
       - name: Cache node_modules
         id: cache-node-modules
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ steps.dep-hash.outputs.hash }}
@@ -47,16 +47,16 @@ jobs:
         run: npm ci
 
       - name: Cache Chrome
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: /opt/hostedtoolcache/setup-chrome
-          key: ${{ runner.os }}-setup-chrome-stable-${{ github.run_id }}
+          key: ${{ runner.os }}-setup-chrome-v2-stable-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-setup-chrome-stable-
+            ${{ runner.os }}-setup-chrome-v2-stable-
 
       - name: Setup Chrome
         id: setup-chrome
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
         with:
           chrome-version: stable
 
@@ -73,7 +73,7 @@ jobs:
           PUPPETEER_EXECUTABLE_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
@@ -86,4 +86,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
