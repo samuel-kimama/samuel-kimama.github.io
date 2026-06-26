@@ -53,14 +53,6 @@ const navItems = [
             }
           </nav>
           <div class="header-socials" aria-label="Social links">
-            <button class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle color theme">
-              <span class="theme-toggle__sun" aria-hidden="true">
-                <Icon name="lucide:sun" size="1.2rem" />
-              </span>
-              <span class="theme-toggle__moon" aria-hidden="true">
-                <Icon name="lucide:moon" size="1.2rem" />
-              </span>
-            </button>
             {
               socialLinks.map((item) => (
                 <a
@@ -76,6 +68,14 @@ const navItems = [
                 </a>
               ))
             }
+            <button class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle color theme">
+              <span class="theme-toggle__sun" aria-hidden="true">
+                <Icon name="lucide:sun" size="1.2rem" />
+              </span>
+              <span class="theme-toggle__moon" aria-hidden="true">
+                <Icon name="lucide:moon" size="1.2rem" />
+              </span>
+            </button>
           </div>
         </div>
       </div>
