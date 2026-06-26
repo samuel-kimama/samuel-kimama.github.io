@@ -49,7 +49,7 @@ jobs:
       - name: Cache Chrome
         uses: actions/cache@v4
         with:
-          path: ~/.cache/setup-chrome
+          path: /opt/hostedtoolcache/setup-chrome
           key: ${{ runner.os }}-setup-chrome-stable-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-setup-chrome-stable-
