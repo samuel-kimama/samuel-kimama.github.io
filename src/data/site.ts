@@ -39,6 +39,10 @@ export const siteContent = {
       year: "2026",
       // TODO: swap href to GitHub Pages site when it ships
       href: "https://github.com/k-leumas/queque",
+      media: {
+        src: "/queque-demo.mp4",
+        alt: "QueQue terminal demo: triggering the ?? prompt and getting a synthesized command."
+      },
       description:
         "A terminal-native AI command synthesizer, triggered with `??`. Meets you mid-thought — describe what you're trying to do and get the command, right in your shell."
     },
