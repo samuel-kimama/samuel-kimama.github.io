@@ -307,8 +307,7 @@ p {
 
 .actions,
 .meta-links,
-.social-links,
-.hero-facts {
+.social-links {
   display: flex;
   flex-wrap: wrap;
   gap: 0.85rem;
@@ -350,31 +349,6 @@ p {
   font-size: 1.03rem;
   line-height: 1.6;
   color: var(--text);
-}
-
-.hero-facts {
-  margin: 1.5rem 0 0;
-  padding: 0;
-  list-style: none;
-  gap: 1.5rem;
-}
-
-.hero-facts li {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.hero-facts strong {
-  font-family: var(--font-display);
-  font-size: 1.45rem;
-  font-weight: 700;
-}
-
-.hero-facts span {
-  color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.4;
 }
 
 .button,

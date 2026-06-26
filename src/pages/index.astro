@@ -4,15 +4,22 @@ import { Icon } from "astro-icon/components";
 import { getResumeData } from "../data/resume";
 import { siteContent } from "../data/site";
 
-const { profile, strengths, technologies, timeline, stats } = await getResumeData();
+const { profile, strengths, technologies, timeline } = await getResumeData();
 const recentTimeline = timeline.slice(0, 2);
 const additionalTimeline = timeline.slice(2);
 const resumeDownloadHref = import.meta.env.DEV ? "/resume-pdf" : "/Samuel-Kimama-Resume.pdf";
-const formatContactUrl = (value: string) => value.replace(/^https?:\/\//, "");
 const metaLinks = [
-  profile.contact.github && { href: profile.contact.github, label: formatContactUrl(profile.contact.github) },
-  profile.contact.linkedin && { href: profile.contact.linkedin, label: formatContactUrl(profile.contact.linkedin) },
-].filter(Boolean) as { href: string; label: string }[];
+  profile.contact.github && {
+    href: profile.contact.github,
+    icon: "mdi:github",
+    label: "GitHub profile",
+  },
+  profile.contact.linkedin && {
+    href: profile.contact.linkedin,
+    icon: "mdi:linkedin",
+    label: "LinkedIn profile",
+  },
+].filter(Boolean) as { href: string; icon: string; label: string }[];
 ---
 
 <BaseLayout title={`${profile.name} | Staff Frontend Engineer`} description={profile.summary}>
@@ -22,20 +29,11 @@ const metaLinks = [
       <h1>Samuel Kimama,</h1>
       <h2 class="hero-subtitle">I design scalable frontend systems that help teams ship with speed and quality.</h2>
       <p class="lead" style="margin-top: 1.5rem;">{profile.summary}</p>
-      <ul class="hero-facts" aria-label="Profile highlights">
-        {stats.map((item) => (
-          <li>
-            <strong>{item.value}</strong>
-            <span>{item.label}</span>
-          </li>
-        ))}
-      </ul>
-      <p class="meta-links" style="margin-top: 1.25rem; font-size: 0.9rem; color: var(--muted);">
-        {metaLinks.map((item, index) => (
-          <>
-            {index > 0 && <span aria-hidden="true">·</span>}
-            <a href={item.href} target="_blank" rel="noreferrer me">{item.label}</a>
-          </>
+      <p class="meta-links" style="margin-top: 1.25rem; color: var(--muted);" aria-label="Profile links">
+        {metaLinks.map((item) => (
+          <a href={item.href} target="_blank" rel="noreferrer me" aria-label={item.label}>
+            <Icon name={item.icon} size="1.25rem" aria-hidden="true" />
+          </a>
         ))}
       </p>
       <aside class="availability-callout" aria-label="Role search">
@@ -251,40 +249,5 @@ const metaLinks = [
     )
   }
 
-
-  <section class="section" id="faq" aria-labelledby="faq-heading">
-    <div class="section-heading">
-      <div>
-        <span class="eyebrow">FAQ</span>
-        <h2 id="faq-heading">Common questions about Samuel Kimama</h2>
-      </div>
-    </div>
-    <div class="resume-grid" style="margin-top: 1rem;">
-      <article class="panel">
-        <h3>What does a Staff Frontend Engineer do?</h3>
-        <p style="margin-top: 0.75rem;">
-          A Staff Frontend Engineer is defined as a senior individual contributor who operates at the intersection of architecture, product, and engineering leadership. Samuel Kimama refers to this scope as the work of building <em>leverage</em> — strong frontend systems, clear component models, and patterns that let teams ship complex products with speed and quality, without accumulating drag.
-        </p>
-      </article>
-      <article class="panel">
-        <h3>Is Samuel Kimama available for new roles?</h3>
-        <p style="margin-top: 0.75rem;">
-          Yes. Samuel Kimama{profile.contact.github && <> (GitHub: <a href={profile.contact.github} target="_blank" rel="noreferrer">samuelmburu</a>)</>} is targeting remote Staff-level frontend engineering roles with broad product and platform ownership. He is open to roles where frontend architecture, cross-functional leadership, and engineering standards are first-class concerns.
-        </p>
-      </article>
-      <article class="panel">
-        <h3>What companies has Samuel Kimama worked at?</h3>
-        <p style="margin-top: 0.75rem;">
-          Samuel Kimama has held senior and staff-level frontend roles at <a href="https://linkedin.com/in/samuelkimama" target="_blank" rel="noreferrer">LinkedIn</a> (2012–2014), Survata (2015–2020), Southwest Airlines (2022–2023), and WITNESS AI (2023–2026). He has also worked at HP, Starbucks, Eddie Bauer, and Resource Interactive earlier in his career.
-        </p>
-      </article>
-      <article class="panel">
-        <h3>What is Samuel Kimama's most notable technical contribution?</h3>
-        <p style="margin-top: 0.75rem;">
-          Samuel Kimama is a named inventor on <a href="https://patents.google.com/patent/US12587529B2/en" target="_blank" rel="noreferrer">US Patent 12,587,529 B2</a> — <em>Methods and systems for security enhancement in artificial intelligence model interactions via automated injection and proxy server implementation</em> — issued March 2026 by the United States Patent and Trademark Office, assigned to WitnessAI.
-        </p>
-      </article>
-    </div>
-  </section>
 
 </BaseLayout>
