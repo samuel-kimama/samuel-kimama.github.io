@@ -8,6 +8,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "secrets:sync": "node scripts/sync-gh-secrets.mjs",
     "check": "astro check"
   },
   "dependencies": {
