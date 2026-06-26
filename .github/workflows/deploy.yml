@@ -46,6 +46,14 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Cache Chrome
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/setup-chrome
+          key: ${{ runner.os }}-setup-chrome-stable-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-setup-chrome-stable-
+
       - name: Setup Chrome
         id: setup-chrome
         uses: browser-actions/setup-chrome@v1
