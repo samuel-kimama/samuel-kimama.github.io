@@ -9,9 +9,13 @@ profile:
     linkedin: LINKEDIN_PROFILE_URL
     website: PUBLIC_SITE_URL
   summary: >
-    Frontend engineer, 16 years in — most of it operating at Staff scope as the first or sole frontend lead. I architect the platform layer: design systems, component contracts, BFFs, and the migration paths between architectures. Recent work: decomposed a Southwest Airlines monolith into Single-SPA micro-frontends; cut TTFB 67% on a B2B analytics platform; first UI engineer at WitnessAI, where I designed the browser-side interception layer for live AI traffic that's covered by US patent 12,587,529.
+    Frontend engineer, 16 years in, most of it operating at Staff scope as the first or sole frontend lead. I start from the user problem and the customer context, then design systems and make the tradeoffs that let a product ship without collapsing under its own complexity. I architect the platform layer: design systems, component contracts, BFFs, and the migration paths between architectures. I shape product with PM, design, and ML. Recent work: decomposed a Southwest Airlines monolith into Single-SPA micro-frontends; cut TTFB 67% on a B2B analytics platform; first UI engineer at WitnessAI, where I designed the browser-side interception layer for live AI traffic that's covered by US patent 12,587,529.
 
 core_strengths:
+  - Understanding the user problem before jumping to a solution, and translating customer context into system constraints
+  - Product shaping with PM, design, and ML, surfacing the tradeoffs so decisions land in engineering reality
+  - System design and honest tradeoff calls across scope, speed, and long-term complexity
+  - Managing complexity in long-lived codebases through legacy migrations, monolith decomposition, and boundaries that hold
   - React + TypeScript architecture for multi-app monorepos
   - Micro-frontend boundaries (Single-SPA) and BFF contracts (GraphQL)
   - Design systems and component APIs that survive team scale
@@ -33,8 +37,9 @@ experience:
       - Established the frontend architecture (React + TypeScript), defining component systems, API contracts, and patterns adopted across the product.
       - Designed, implemented, and documented a company-wide RBAC system, retrofitting the existing application and standardizing permission enforcement across all UI surfaces.
       - Defined and aligned on RBAC API contracts with backend, enabling consistent client-side enforcement and simplifying feature development.
-      - Partnered with ML, backend, and product teams to surface model outputs through intuitive UI workflows.
-      - Led integration of enterprise SSO (WorkOS), enabling secure onboarding and supporting enterprise customer adoption.
+      - Partnered with ML, backend, and product teams to translate ambiguous customer problems into concrete UI workflows that surface model outputs where users need them.
+      - Shaped product direction with PMs and designers by making system tradeoffs (scope, performance, complexity) legible, so decisions were grounded in engineering reality.
+      - Led integration of enterprise SSO (WorkOS), driven by direct engagement with enterprise customer requirements around secure onboarding and adoption.
     impact: >
       Implemented RBAC and WorkOS SSO integrations, elevating the frontend into
       a first-class product layer used for secure, role-based workflows and
@@ -63,6 +68,7 @@ experience:
       - Built a GraphQL/BFF layer transforming legacy APIs into UI-optimized read models, simplifying client complexity.
       - Designed event-driven integrations (Lambda, Kinesis, DynamoDB) to decouple frontend from backend availability constraints.
       - Enabled safe, incremental migration through feature flags and controlled cutovers, reducing risk in a production-critical system.
+      - Made deliberate tradeoffs between migration speed, team autonomy, and system risk, managing complexity across a large legacy surface without stalling delivery.
     impact: >
       Reduced system complexity, improved delivery velocity, and enabled
       scalable frontend ownership across teams.
@@ -77,10 +83,10 @@ experience:
       Principal frontend engineer for a multi-application platform integrating
       ML-driven workflows.
     highlights:
-      - Defined frontend architecture for a React + TypeScript mono-repo, enabling multiple applications to scale independently.
-      - Partnered with ML teams to integrate classification and automation systems into user workflows.
-      - Established frontend standards for A11y, analytics, performance, and testing, improving consistency and maintainability.
-      - Built design systems and tooling that reduced developer friction and accelerated feature delivery.
+      - Designed the system architecture for a React + TypeScript mono-repo, enabling multiple applications to scale independently while sharing core primitives.
+      - Partnered with ML teams and product leaders to understand the underlying user problems, then shaped how classification and automation surfaced in user workflows.
+      - Established frontend standards for A11y, analytics, performance, and testing, improving consistency and maintainability as the surface area grew.
+      - Built design systems and tooling that reduced developer friction, absorbing complexity into shared layers so product teams could move faster.
     impact: >
       Enabled scalable product development while integrating ML capabilities
       into user-facing workflows.
@@ -94,8 +100,8 @@ experience:
       First frontend engineer, later de facto frontend lead for a B2B SaaS
       analytics platform.
     highlights:
-      - Architected and owned frontend systems across an AngularJS to React migration, enabling long-term platform evolution.
-      - Built a data visualization platform (D3-based plugin system) used across the product.
+      - Architected and owned frontend systems across an AngularJS to React migration, making incremental-vs-rewrite tradeoffs that preserved product velocity while managing long-term complexity.
+      - Designed a data visualization platform (D3-based plugin system) grounded in how analysts actually explored customer data, adopted across the product.
       - Improved performance and responsiveness through architectural changes, including 67% TTFB reduction for return visitors.
       - Established developer workflows, documentation, and standards that reduced onboarding time from 1 week to 1 day.
     impact: >
