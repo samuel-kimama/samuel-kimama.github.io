@@ -9,19 +9,18 @@ profile:
     linkedin: LINKEDIN_PROFILE_URL
     website: PUBLIC_SITE_URL
   summary: >
-    Frontend engineer, 16 years in, most of it operating at Staff scope as the first or sole frontend lead. I start from the user problem and the customer context, then design systems and make the tradeoffs that let a product ship without collapsing under its own complexity. I architect the platform layer: design systems, component contracts, BFFs, and the migration paths between architectures. I shape product with PM, design, and ML. Recent work: decomposed a Southwest Airlines monolith into Single-SPA micro-frontends; cut TTFB 67% on a B2B analytics platform; first UI engineer at WitnessAI, where I designed the browser-side interception layer for live AI traffic that's covered by US patent 12,587,529.
+    Frontend engineer, 16 years in, mostly at Staff scope as first or sole frontend lead. Start from the user problem and customer context, design systems that manage complexity, and make the tradeoffs that ship product. Architect the platform layer (design systems, component contracts, BFFs, migrations) and shape product with PM, design, and ML. Recent: decomposed a Southwest Airlines monolith into Single-SPA micro-frontends; cut TTFB 67% on a B2B analytics platform; first UI engineer at WitnessAI, where the browser-side interception layer I designed for live AI traffic is covered by US patent 12,587,529.
 
 core_strengths:
-  - Understanding the user problem before jumping to a solution, and translating customer context into system constraints
-  - Product shaping with PM, design, and ML, surfacing the tradeoffs so decisions land in engineering reality
+  - Starting from the user problem and customer context, translating both into system constraints
+  - Product shaping with PM, design, and ML, making tradeoffs legible to non-engineers
   - System design and honest tradeoff calls across scope, speed, and long-term complexity
-  - Managing complexity in long-lived codebases through legacy migrations, monolith decomposition, and boundaries that hold
+  - Managing complexity in long-lived codebases via migrations, decomposition, and boundaries that hold
   - React + TypeScript architecture for multi-app monorepos
   - Micro-frontend boundaries (Single-SPA) and BFF contracts (GraphQL)
   - Design systems and component APIs that survive team scale
-  - URL-driven state — shareable deep links, reload-safe workflows, URL is the source of truth
-  - Performance budgets, Core Web Vitals, and tech choices that make accessibility easier — keyboard navigation, focus management, semantic HTML
-  - "Legacy migrations: AngularJS → React, monolith → micro-frontends"
+  - URL-driven state: shareable deep links and reload-safe workflows
+  - Performance budgets, Core Web Vitals, and accessibility via semantic HTML and focus management
 
 experience:
   - company: WITNESS AI
@@ -31,19 +30,16 @@ experience:
     start: 2023-01
     end: 2026-01
     summary: >
-      First UI engineer, responsible for establishing frontend architecture and
-      enabling cross-team delivery for a rapidly evolving SaaS platform.
+      First UI engineer, establishing frontend architecture and cross-team
+      delivery patterns for a fast-evolving SaaS platform.
     highlights:
-      - Established the frontend architecture (React + TypeScript), defining component systems, API contracts, and patterns adopted across the product.
-      - Designed, implemented, and documented a company-wide RBAC system, retrofitting the existing application and standardizing permission enforcement across all UI surfaces.
-      - Defined and aligned on RBAC API contracts with backend, enabling consistent client-side enforcement and simplifying feature development.
-      - Partnered with ML, backend, and product teams to translate ambiguous customer problems into concrete UI workflows that surface model outputs where users need them.
-      - Shaped product direction with PMs and designers by making system tradeoffs (scope, performance, complexity) legible, so decisions were grounded in engineering reality.
-      - Led integration of enterprise SSO (WorkOS), driven by direct engagement with enterprise customer requirements around secure onboarding and adoption.
+      - Established React + TypeScript architecture, component systems, and API contracts adopted across the product.
+      - Designed and shipped a company-wide RBAC system with backend-aligned API contracts, standardizing permission enforcement across all UI surfaces.
+      - Translated ambiguous customer problems into UI workflows with ML, backend, and product; surfaced tradeoffs so PMs and designers could scope in engineering reality.
+      - Led enterprise SSO (WorkOS) integration, driven by enterprise customer requirements for secure onboarding.
     impact: >
-      Implemented RBAC and WorkOS SSO integrations, elevating the frontend into
-      a first-class product layer used for secure, role-based workflows and
-      enabling WITNESS AI to engage multiple large enterprise clients.
+      Elevated the frontend into a first-class product layer, unlocking
+      multiple large enterprise engagements.
     patents:
       - title: Real-time security for AI interactions
         description: proxy-injected, real-time policy enforcement on AI input/output.
@@ -60,18 +56,15 @@ experience:
     start: 2022-06
     end: 2023-05
     summary: >
-      Staff-level contributor on a large-scale modernization initiative
-      migrating critical systems to a cloud-native architecture.
+      Modernization initiative migrating critical systems to a cloud-native
+      architecture.
     highlights:
-      - Led frontend decomposition of a legacy monolith into micro-frontends (Single-SPA), enabling independent team ownership and parallel delivery.
-      - Defined frontend boundaries and API contracts, reducing coupling and improving system maintainability.
-      - Built a GraphQL/BFF layer transforming legacy APIs into UI-optimized read models, simplifying client complexity.
-      - Designed event-driven integrations (Lambda, Kinesis, DynamoDB) to decouple frontend from backend availability constraints.
-      - Enabled safe, incremental migration through feature flags and controlled cutovers, reducing risk in a production-critical system.
-      - Made deliberate tradeoffs between migration speed, team autonomy, and system risk, managing complexity across a large legacy surface without stalling delivery.
+      - Led frontend decomposition of a legacy monolith into Single-SPA micro-frontends, unblocking parallel team ownership.
+      - Built a GraphQL/BFF layer that transformed legacy APIs into UI-optimized read models, simplifying client complexity.
+      - Designed event-driven integrations (Lambda, Kinesis, DynamoDB) to decouple frontend from backend availability.
+      - Made deliberate tradeoffs across migration speed, team autonomy, and risk; used feature flags and controlled cutovers to ship without stalling delivery.
     impact: >
-      Reduced system complexity, improved delivery velocity, and enabled
-      scalable frontend ownership across teams.
+      Reduced complexity and enabled scalable frontend ownership across teams.
 
   - company: Confidential Client (NDA)
     title: Lead Frontend Engineer
@@ -80,16 +73,15 @@ experience:
     start: 2021-03
     end: 2022-09
     summary: >
-      Principal frontend engineer for a multi-application platform integrating
+      Principal frontend engineer for a multi-app platform integrating
       ML-driven workflows.
     highlights:
-      - Designed the system architecture for a React + TypeScript mono-repo, enabling multiple applications to scale independently while sharing core primitives.
-      - Partnered with ML teams and product leaders to understand the underlying user problems, then shaped how classification and automation surfaced in user workflows.
-      - Established frontend standards for A11y, analytics, performance, and testing, improving consistency and maintainability as the surface area grew.
-      - Built design systems and tooling that reduced developer friction, absorbing complexity into shared layers so product teams could move faster.
+      - Designed a React + TypeScript monorepo hosting multiple apps that shared core primitives.
+      - Partnered with ML teams and product leaders to shape how classification and automation surfaced in user workflows.
+      - Established A11y, analytics, performance, and testing standards; built design systems that absorbed complexity so product teams moved faster.
     impact: >
-      Enabled scalable product development while integrating ML capabilities
-      into user-facing workflows.
+      Enabled scalable product development and ML integration into
+      user-facing workflows.
 
   - company: Survata
     title: Lead Frontend Engineer
@@ -97,15 +89,14 @@ experience:
     start: 2015-06
     end: 2020-04
     summary: >
-      First frontend engineer, later de facto frontend lead for a B2B SaaS
+      First frontend engineer, later de facto lead for a B2B SaaS
       analytics platform.
     highlights:
-      - Architected and owned frontend systems across an AngularJS to React migration, making incremental-vs-rewrite tradeoffs that preserved product velocity while managing long-term complexity.
-      - Designed a data visualization platform (D3-based plugin system) grounded in how analysts actually explored customer data, adopted across the product.
-      - Improved performance and responsiveness through architectural changes, including 67% TTFB reduction for return visitors.
-      - Established developer workflows, documentation, and standards that reduced onboarding time from 1 week to 1 day.
+      - Owned an AngularJS to React migration, using incremental-vs-rewrite tradeoffs to preserve product velocity through the transition.
+      - Designed a D3-based data visualization plugin platform grounded in how analysts actually explored customer data.
+      - Cut TTFB 67% for return visitors through architectural changes; reduced onboarding from 1 week to 1 day via standards and workflow tooling.
     impact: >
-      Scaled frontend from a single engineer to a mature platform supporting
+      Scaled the frontend from a single engineer to a mature platform supporting
       product growth and team expansion.
 
   - company: LinkedIn
@@ -113,10 +104,10 @@ experience:
     start: 2012-03
     end: 2014-10
     summary: >
-      Led development of login and authentication flows used across web and
-      mobile web at LinkedIn scale.
+      Led login and authentication flows across web and mobile web at
+      LinkedIn scale.
     highlights:
-      - Designed secure client-server interaction patterns to safely preload user context.
+      - Designed secure client-server patterns to safely preload user context.
       - Contributed to shared UI systems adopted across multiple teams.
     impact: >
       Delivered secure, scalable user-facing systems used by millions.
