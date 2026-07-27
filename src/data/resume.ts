@@ -5,6 +5,7 @@ declare const __RESUME_CONTACT__: {
   linkedin?: string;
   website?: string;
   github?: string;
+  book_me?: string;
 };
 
 type SocialLink = {
@@ -22,7 +23,12 @@ function formatMonth(value: string) {
   return monthFormatter.format(new Date(`${value}-01T00:00:00Z`));
 }
 
-const contactPlaceholders = new Set(["EMAIL", "LINKEDIN_PROFILE_URL", "PUBLIC_SITE_URL", "GH_PROFILE_URL"]);
+/** Formats a YYYY-MM (or YYYY) value as a four-digit year. */
+function formatYear(value: string) {
+  return value.slice(0, 4);
+}
+
+const contactPlaceholders = new Set(["EMAIL", "LINKEDIN_PROFILE_URL", "PUBLIC_SITE_URL", "GH_PROFILE_URL", "BOOK_ME_URL"]);
 
 function resolveContactValue(fallback?: string, value?: string) {
   const resolved = value?.trim();
@@ -51,10 +57,19 @@ export async function getResumeData() {
       linkedin: resolveContactValue(resume.profile.contact.linkedin, __RESUME_CONTACT__.linkedin),
       github: resolveContactValue(resume.profile.contact.github, __RESUME_CONTACT__.github),
       website: resolveContactValue(resume.profile.contact.website, __RESUME_CONTACT__.website),
+      book_me: resolveContactValue(resume.profile.contact.book_me, __RESUME_CONTACT__.book_me),
     },
   };
   const strengths = resume.core_strengths;
   const technologies = resume.technologies;
+  const education = {
+    degree: resume.education.degree,
+    school: resume.education.school,
+    period:
+      resume.education.start && resume.education.end
+        ? `${formatYear(resume.education.start)} – ${formatYear(resume.education.end)}`
+        : undefined,
+  };
   const socialLinks = [
     profile.contact.linkedin && { label: "LinkedIn", href: profile.contact.linkedin },
     profile.contact.github && { label: "GitHub", href: profile.contact.github },
@@ -75,6 +90,7 @@ export async function getResumeData() {
     profile,
     strengths,
     technologies,
+    education,
     socialLinks,
     stats: [
       { value: "16+", label: "years shipping frontend systems" },

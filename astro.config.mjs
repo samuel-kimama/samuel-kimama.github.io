@@ -49,13 +49,14 @@ export default defineConfig({
         linkedin: getEnv("LINKEDIN_PROFILE_URL"),
         website: getEnv("PUBLIC_SITE_URL"),
         github: getEnv("GH_PROFILE_URL"),
+        book_me: getEnv("BOOK_ME_URL"),
       }),
     },
   },
   integrations: [
     icon({
       include: {
-        mdi: ["linkedin", "github"],
+        mdi: ["linkedin", "github", "calendar"],
         lucide: ["download", "moon", "sun", "external-link", "mail", "globe"],
       },
     }),

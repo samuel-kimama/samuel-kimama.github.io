@@ -2,8 +2,7 @@
 import { Icon } from "astro-icon/components";
 import { getResumeData } from "../data/resume";
 
-const { profile, strengths, technologies, timeline } = await getResumeData();
-const technologyLine = technologies.join(" • ");
+const { profile, strengths, technologies, education, timeline } = await getResumeData();
 
 const formatContactUrl = (value: string) => value.replace(/^https?:\/\//, "");
 
@@ -28,6 +27,11 @@ const contactItems: ContactItem[] = [
     icon: "lucide:globe",
     href: profile.contact.website,
     label: formatContactUrl(profile.contact.website),
+  },
+  profile.contact.book_me && {
+    icon: "mdi:calendar",
+    href: profile.contact.book_me,
+    label: "Grab time on my calendar",
   },
 ].filter(Boolean) as ContactItem[];
 ---
@@ -350,8 +354,8 @@ const contactItems: ContactItem[] = [
         </div>
         <div class="contact">
           {contactItems.map((item) => (
-            <a class="contact-item" href={item.href}>
-              <Icon name={item.icon} class="contact-icon" aria-hidden="true" />
+            <a class="contact-item" data-for={item.label.toLowerCase()} href={item.href}>
+              <Icon name={item.icon} class="contact-icon" aria-hidden="true" data-for={item.label.toLowerCase()} />
               <span>{item.label}</span>
             </a>
           ))}
@@ -409,14 +413,16 @@ const contactItems: ContactItem[] = [
 
           <section class="section">
             <h2 class="section-title">Technologies</h2>
-            <div class="skills-copy">{technologyLine}</div>
+            <ul class="strengths">
+              {technologies.map((item) => <li>{item}</li>)}
+            </ul>
           </section>
 
           <section class="section">
             <h2 class="section-title">Education</h2>
-            <div class="skills-copy">
-              B.S. Computer Science & Engineering — The Ohio State University
-            </div>
+            <div class="skills-copy">{education.degree}</div>
+            <div class="skills-copy">{education.school}</div>
+            {education.period && <div class="role-period">{education.period}</div>}
           </section>
         </aside>
       </div>

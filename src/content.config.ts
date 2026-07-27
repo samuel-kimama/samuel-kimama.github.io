@@ -15,6 +15,7 @@ const resume = defineCollection({
         linkedin: z.string(),
         github: z.string().optional(),
         website: z.string().optional(),
+        book_me: z.string().optional(),
       }),
       summary: z.string(),
     }),
@@ -41,6 +42,12 @@ const resume = defineCollection({
         })).optional(),
       }),
     ),
+    education: z.object({
+      degree: z.string(),
+      school: z.string(),
+      start: z.string().optional(),
+      end: z.string().optional(),
+    }),
     technologies: z.array(z.string()),
   }),
 });

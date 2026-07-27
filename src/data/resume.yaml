@@ -1,5 +1,5 @@
 profile:
-  name: Samuel Kimama
+  name: NAME
   headline: Staff Frontend Engineer
   level: Staff / Principal
   location: Remote
@@ -8,8 +8,9 @@ profile:
     email: EMAIL
     linkedin: LINKEDIN_PROFILE_URL
     website: PUBLIC_SITE_URL
+    book_me: BOOK_ME_URL
   summary: >
-    Frontend engineer, 16 years in, mostly at Staff scope as first or sole frontend lead. Start from the user problem and customer context, design systems that manage complexity, and make the tradeoffs that ship product. Architect the platform layer (design systems, component contracts, BFFs, migrations) and shape product with PM, design, and ML. Recent: decomposed a Southwest Airlines monolith into Single-SPA micro-frontends; cut TTFB 67% on a B2B analytics platform; first UI engineer at WitnessAI, where the browser-side interception layer I designed for live AI traffic is covered by US patent 12,587,529.
+    Founding frontend engineer, patent-holder, 16 years in, usually the first or sole frontend lead on the team. As founding UI engineer at WitnessAI, I designed the browser-side interception layer for live AI traffic, now covered by US patent 12,587,529; at Southwest Airlines I decomposed a legacy monolith into Single-SPA micro-frontends; and on a B2B SaaS analytics platform I cut TTFB by 67%. I start with the user, architect the platform layer (design systems, BFFs, migrations), and make the tradeoff calls that keep product moving.
 
 core_strengths:
   - Starting from the user problem and customer context, translating both into system constraints
@@ -19,7 +20,7 @@ core_strengths:
   - React + TypeScript architecture for multi-app monorepos
   - Micro-frontend boundaries (Single-SPA) and BFF contracts (GraphQL)
   - Design systems and component APIs that survive team scale
-  - URL-driven state: shareable deep links and reload-safe workflows
+  - "URL-driven state: shareable deep links and reload-safe workflows"
   - Performance budgets, Core Web Vitals, and accessibility via semantic HTML and focus management
 
 experience:
@@ -33,13 +34,12 @@ experience:
       First UI engineer, establishing frontend architecture and cross-team
       delivery patterns for a fast-evolving SaaS platform.
     highlights:
-      - Established React + TypeScript architecture, component systems, and API contracts adopted across the product.
-      - Designed and shipped a company-wide RBAC system with backend-aligned API contracts, standardizing permission enforcement across all UI surfaces.
-      - Translated ambiguous customer problems into UI workflows with ML, backend, and product; surfaced tradeoffs so PMs and designers could scope in engineering reality.
-      - Led enterprise SSO (WorkOS) integration, driven by enterprise customer requirements for secure onboarding.
+      - Established the React + TypeScript architecture, component library, and API contracts that 5 frontend engineers build on across the WitnessAI platform.
+      - Designed and shipped the company-wide RBAC system enforcing 5 roles across every route and UI control, partnered with backend to close data-leakage vectors, supported SOC2 readiness, and unblocked enterprise purchase contracts requiring role-based permission enforcement.
+      - "Shipped 3 core customer workflows in partnership with ML, backend, and product: alerts for triaging security incidents, conversations for contextual review of user + LLM interactions, and end-user notifications when traffic was redirected or blocked by policy."
+      - Led the enterprise SSO (WorkOS) integration that unblocked deals with multiple Fortune 100 companies and a top-tier global telecom, all of which required SSO to close.
     impact: >
-      Elevated the frontend into a first-class product layer, unlocking
-      multiple large enterprise engagements.
+      Elevated the frontend into a first-class product layer: RBAC and enterprise SSO directly unblocked WitnessAI's first multi-million-dollar ARR enterprise deals, including multiple Fortune 100 customers and a top-tier global telecom.
     patents:
       - title: Real-time security for AI interactions
         description: proxy-injected, real-time policy enforcement on AI input/output.
@@ -107,20 +107,23 @@ experience:
       Led login and authentication flows across web and mobile web at
       LinkedIn scale.
     highlights:
-      - Designed secure client-server patterns to safely preload user context.
-      - Contributed to shared UI systems adopted across multiple teams.
+      - Designed secure client-server preload patterns for LinkedIn's login and auth flow.
+      - Built the profile-page connection widget that helped users connect with new members via their shared connections, backed by an offline pipeline that pre-computed degrees of connection across LinkedIn's full 300M+ member graph.
+      - Contributed core components to LinkedIn's shared UI system, used across multiple product surfaces on web and mobile web.
     impact: >
-      Delivered secure, scalable user-facing systems used by millions.
+      Shipped secure login, auth, and profile connection features used across LinkedIn's global member base on web and mobile web.
 
 earlier_experience:
   - HP
   - Starbucks
   - Eddie Bauer
-  - Resource Interactive
+  - Resource Interactive (Victoria's Secret, Bath & Body Works, Gain, Tide, Chlorox, P&G brands)
 
 education:
   degree: B.S. Computer Science & Engineering
   school: The Ohio State University
+  start: 2004-06
+  end: 2009-05
 
 technologies:
   - React
