@@ -31,7 +31,7 @@ const contactItems: ContactItem[] = [
   profile.contact.book_me && {
     icon: "mdi:calendar",
     href: profile.contact.book_me,
-    label: "Grab time on my calendar",
+    label: `Grab time on my calendar: ${formatContactUrl(profile.contact.book_me)}`,
   },
 ].filter(Boolean) as ContactItem[];
 ---
@@ -80,10 +80,12 @@ const contactItems: ContactItem[] = [
       main {
         width: var(--page-width);
         padding: var(--page-margin);
-        display: grid;
-        gap: 0.05in;
-        align-content: start;
+        display: block;
         background: #ffffff;
+      }
+
+      main > * + * {
+        margin-top: 0.05in;
       }
 
       @media screen {
@@ -179,14 +181,11 @@ const contactItems: ContactItem[] = [
       }
 
       .resume-layout {
-        display: grid;
-        grid-template-columns: 2.25fr 0.95fr;
-        gap: 0.2in;
-        align-items: start;
+        display: block;
       }
 
       .section + .section {
-        margin-top: 0.08in;
+        margin-top: 0.1in;
       }
 
       .section-title {
@@ -195,6 +194,7 @@ const contactItems: ContactItem[] = [
         letter-spacing: 0.12em;
         text-transform: uppercase;
         color: var(--accent);
+        break-after: avoid;
       }
 
       .strengths {
@@ -215,7 +215,6 @@ const contactItems: ContactItem[] = [
         margin-top: 0.09in;
         padding-top: 0;
         border-top: 0;
-        break-inside: avoid;
       }
 
       .role-header {
@@ -223,6 +222,8 @@ const contactItems: ContactItem[] = [
         justify-content: space-between;
         gap: 0.12in;
         align-items: baseline;
+        break-after: avoid;
+        break-inside: avoid;
       }
 
       .role-title {
@@ -365,7 +366,7 @@ const contactItems: ContactItem[] = [
       <p class="summary">{profile.summary}</p>
 
       <div class="resume-layout">
-        <section>
+        <section class="section">
           <h2 class="section-title">Experience</h2>
           {
             timeline.map((entry) => (
@@ -403,28 +404,26 @@ const contactItems: ContactItem[] = [
           }
         </section>
 
-        <aside>
-          <section class="section">
-            <h2 class="section-title">Core Strengths</h2>
-            <ul class="strengths">
-              {strengths.map((item) => <li>{item}</li>)}
-            </ul>
-          </section>
+        <section class="section">
+          <h2 class="section-title">Core Strengths</h2>
+          <ul class="strengths">
+            {strengths.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
 
-          <section class="section">
-            <h2 class="section-title">Technologies</h2>
-            <ul class="strengths">
-              {technologies.map((item) => <li>{item}</li>)}
-            </ul>
-          </section>
+        <section class="section">
+          <h2 class="section-title">Technologies</h2>
+          <ul class="strengths">
+            {technologies.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
 
-          <section class="section">
-            <h2 class="section-title">Education</h2>
-            <div class="skills-copy">{education.degree}</div>
-            <div class="skills-copy">{education.school}</div>
-            {education.period && <div class="role-period">{education.period}</div>}
-          </section>
-        </aside>
+        <section class="section">
+          <h2 class="section-title">Education</h2>
+          <div class="skills-copy">{education.degree}</div>
+          <div class="skills-copy">{education.school}</div>
+          {education.period && <div class="role-period">{education.period}</div>}
+        </section>
       </div>
     </main>
   </body>
