@@ -45,26 +45,26 @@ export default defineConfig({
   vite: {
     define: {
       __RESUME_CONTACT__: JSON.stringify({
+        name: getEnv("NAME"),
         email: getEnv("EMAIL"),
         linkedin: getEnv("LINKEDIN_PROFILE_URL"),
         website: getEnv("PUBLIC_SITE_URL"),
         github: getEnv("GH_PROFILE_URL"),
-        book_me: getEnv("BOOK_ME_URL"),
       }),
     },
   },
   integrations: [
     icon({
       include: {
-        mdi: ["linkedin", "github", "calendar"],
+        mdi: ["linkedin", "github"],
         lucide: ["download", "moon", "sun", "external-link", "mail", "globe"],
       },
     }),
     pdf({
       launch: isCI
         ? {
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
-          }
+          args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        }
         : undefined,
       pages: {
         "/resume-pdf": {
@@ -74,6 +74,12 @@ export default defineConfig({
             format: "Letter",
             printBackground: true,
             preferCSSPageSize: true,
+            margin: {
+              top: "0",
+              right: "0",
+              bottom: "0",
+              left: "0",
+            },
           },
         },
       },

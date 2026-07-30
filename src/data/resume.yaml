@@ -1,6 +1,6 @@
 profile:
   name: NAME
-  headline: Staff Frontend Engineer
+  headline: Staff Product Engineer, AI Interfaces and Developer Tools
   level: Staff / Principal
   location: Remote
   contact:
@@ -8,27 +8,29 @@ profile:
     email: EMAIL
     linkedin: LINKEDIN_PROFILE_URL
     website: PUBLIC_SITE_URL
-    book_me: BOOK_ME_URL
   summary: >
-    Founding frontend engineer, patent-holder, 16 years in, usually the first or sole frontend lead on the team. As founding UI engineer at WitnessAI, I designed the browser-side interception layer for live AI traffic, now covered by US patent 12,587,529; at Southwest Airlines I decomposed a legacy monolith into Single-SPA micro-frontends; and on a B2B SaaS analytics platform I cut TTFB by 67%. I start with the user, architect the platform layer (design systems, BFFs, migrations), and make the tradeoff calls that keep product moving.
+    Founding engineer and patent-holder, 16 years shipping product at the interface layer. As first UI engineer at WitnessAI I built the AI security workflows the product sold on: contextual review of user and LLM interactions, policy-block notifications, and incident triage; I also designed the browser-side interception layer now covered by US patent 12,587,529. The RBAC and enterprise SSO systems I owned unblocked WitnessAI's first multi-million-dollar deals. Earlier, a GraphQL BFF and event-driven services over a decomposed monolith at Southwest, and billing shipped end to end at Survata from Groovy service logic and schema design through the UI. Independently ship applied AI end to end: QueQue turns natural language into shell commands over an LLM API, distributed via Homebrew; Etch is a browser extension on Chrome and Firefox spanning seven LLM platforms; pm-loop is a bounded agent-to-agent review loop running in CI.
 
 core_strengths:
-  - Starting from the user problem and customer context, translating both into system constraints
-  - Product shaping with PM, design, and ML, making tradeoffs legible to non-engineers
-  - System design and honest tradeoff calls across scope, speed, and long-term complexity
-  - Managing complexity in long-lived codebases via migrations, decomposition, and boundaries that hold
-  - React + TypeScript architecture for multi-app monorepos
-  - Micro-frontend boundaries (Single-SPA) and BFF contracts (GraphQL)
-  - Design systems and component APIs that survive team scale
-  - "URL-driven state: shareable deep links and reload-safe workflows"
-  - Performance budgets, Core Web Vitals, and accessibility via semantic HTML and focus management
+  - Patented real-time policy enforcement on live AI traffic, proxy-injected on model input and output
+  - Production surfaces for inspecting live user and LLM conversation traffic
+  - "AI product surfaces enterprise buyers evaluate: incident triage, policy-block notification"
+  - "Agent-to-agent loops that terminate: persisted triage state and iteration caps in CI"
+  - Model output shaped for surfaces where a wrong answer is destructive, including natural language to executable shell
+  - "Access control and data-leakage defense for AI systems: RBAC, SOC2 readiness, enterprise SSO"
+  - Seven LLM platform integrations, resilient to UI churn in surfaces I do not control
+  - LLM developer tools shipped and distributed solo
+  # - ML classification and automation turned into workflows people actually use
+  - Honest tradeoff calls across scope, speed, and long-term complexity
+  - Long-lived codebases held together by migrations, decomposition, and boundaries that last
+  - React + TypeScript monorepos, GraphQL BFF contracts
+  - "Features owned end to end: service logic and SQL schema design through to the shipped UI"
 
 experience:
-  - company: WITNESS AI
+  - company: WitnessAI
     title: Senior Software Engineer
-    scope: Staff-level scope
     location: Remote
-    start: 2023-01
+    start: 2023-10
     end: 2026-01
     summary: >
       First UI engineer, establishing frontend architecture and cross-team
@@ -51,7 +53,6 @@ experience:
 
   - company: Southwest Airlines
     title: Senior Software Engineer
-    scope: Staff-level scope
     location: Remote
     start: 2022-06
     end: 2023-05
@@ -59,7 +60,7 @@ experience:
       Modernization initiative migrating critical systems to a cloud-native
       architecture.
     highlights:
-      - Led frontend decomposition of a legacy monolith into Single-SPA micro-frontends, unblocking parallel team ownership.
+      - Defined the seams decomposing a legacy monolith into independently owned micro-frontends, unblocking parallel team delivery.
       - Built a GraphQL/BFF layer that transformed legacy APIs into UI-optimized read models, simplifying client complexity.
       - Designed event-driven integrations (Lambda, Kinesis, DynamoDB) to decouple frontend from backend availability.
       - Made deliberate tradeoffs across migration speed, team autonomy, and risk; used feature flags and controlled cutovers to ship without stalling delivery.
@@ -68,10 +69,9 @@ experience:
 
   - company: Confidential Client (NDA)
     title: Lead Frontend Engineer
-    scope: Staff-level scope
     location: Remote
-    start: 2021-03
-    end: 2022-09
+    start: 2020-06
+    end: 2022-05
     summary: >
       Principal frontend engineer for a multi-app platform integrating
       ML-driven workflows.
@@ -85,13 +85,14 @@ experience:
 
   - company: Survata
     title: Lead Frontend Engineer
-    scope: Staff-level scope
+    location: San Francisco, CA
     start: 2015-06
     end: 2020-04
     summary: >
       First frontend engineer, later de facto lead for a B2B SaaS
       analytics platform.
     highlights:
+      - "Shipped multi-pay-period billing end to end: Groovy service logic, GORM schema changes designed with the CTO, and a self-serve survey extension in the UI that removed CSRs from the renewal path."
       - Owned an AngularJS to React migration, using incremental-vs-rewrite tradeoffs to preserve product velocity through the transition.
       - Designed a D3-based data visualization plugin platform grounded in how analysts actually explored customer data.
       - Cut TTFB 67% for return visitors through architectural changes; reduced onboarding from 1 week to 1 day via standards and workflow tooling.
@@ -103,6 +104,7 @@ experience:
     title: Senior Software Engineer
     start: 2012-03
     end: 2014-10
+    location: Mountain View, CA
     summary: >
       Led login and authentication flows across web and mobile web at
       LinkedIn scale.
@@ -117,7 +119,36 @@ earlier_experience:
   - HP
   - Starbucks
   - Eddie Bauer
-  - Resource Interactive (Victoria's Secret, Bath & Body Works, Gain, Tide, Chlorox, P&G brands)
+  - Resource Interactive (Victoria's Secret, Bath & Body Works, Gain, Tide, Clorox, P&G brands)
+
+projects:
+  - name: pm-loop
+    tagline: CI loop where one agent triages another agent's code review.
+    description: Used in CI across multiple projects
+    start: 2026-03
+    highlights:
+      - "GitHub Action running Claude as a PM partner whenever a Codex reviewer bot comments on a PR: fixes real bugs, files tickets for out-of-scope concerns, and pushes back on premature or style-only feedback."
+      - Persists triage state across runs and caps iterations, so the fix → re-review loop terminates instead of spinning.
+  - name: QueQue
+    tagline: Natural language to shell commands via LLM API, triggered with `??` pasted right back into your terminal.
+    href: https://github.com/k-leumas/queque
+    start: 2026-05
+    highlights:
+      - "Prompt and output design for a destructive surface: generated commands are pasted to the prompt line for review, never auto-executed."
+      - CLI distributed via Homebrew tap, Zsh plugin, and Zellij integration.
+      - Designed for interrupted workflows. Queue now, run when unblocked.
+
+  - name: Etch
+    tagline: One-click marking via hover handle — jump back right back to the block section you bookmarked from anywhere.
+    href: https://k-leumas.github.io/etch-extension/
+    start: 2026-03
+    highlights:
+      - Selectorless, geometry-based architecture keeps bookmarks resilient to UI changes across platforms you do not control.
+      - Browser extension shipped on Chrome and Firefox; supports ChatGPT, Claude, Gemini, Copilot, Perplexity, Grok, and Mistral.
+      # - MCP server exposing bookmarked context to other tools.
+      # - FTS5 SQLite search layer with bm25 ranking and owner-scoped filtering.
+
+
 
 education:
   degree: B.S. Computer Science & Engineering
@@ -126,15 +157,20 @@ education:
   end: 2009-05
 
 technologies:
+  - TypeScript / JavaScript (ES6+)
+  - Groovy
+  - SQL
   - React
-  - TypeScript
-  - JavaScript (ES6+)
-  - D3
   - Node.js
-  - AWS
   - GraphQL
-  - HTML/CSS
-  - Webpack
+  - LLM APIs (Anthropic, OpenAI)
+  - GitHub Actions
+  - WebExtensions (Chrome, Firefox)
+  - AWS (Lambda, Kinesis, DynamoDB, CloudFront)
+  - Single-SPA
+  - D3
+  - Astro
   - Vite
-  - Jest
-  - RTL
+  - Webpack
+  - Jest / RTL
+  - HTML/CSS

@@ -15,7 +15,6 @@ const resume = defineCollection({
         linkedin: z.string(),
         github: z.string().optional(),
         website: z.string().optional(),
-        book_me: z.string().optional(),
       }),
       summary: z.string(),
     }),
@@ -42,6 +41,27 @@ const resume = defineCollection({
         })).optional(),
       }),
     ),
+    projects: z.array(
+      z.object({
+        name: z.string(),
+        tagline: z.string(),
+        href: z.string().optional(),
+        description: z.string().optional(),
+        start: z.string().optional(),
+        highlights: z.array(z.string()),
+      }).superRefine((project, ctx) => {
+        const hasHref = Boolean(project.href?.trim());
+        const hasDescription = Boolean(project.description?.trim());
+
+        if (hasHref === hasDescription) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Project must include either href or description, but not both.",
+            path: hasHref ? ["description"] : ["href"],
+          });
+        }
+      }),
+    ).optional(),
     education: z.object({
       degree: z.string(),
       school: z.string(),

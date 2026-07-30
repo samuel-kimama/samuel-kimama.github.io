@@ -63,6 +63,7 @@ jobs:
       - name: Build site
         run: npm run build
         env:
+          NAME: ${{ secrets.NAME }}
           EMAIL: ${{ secrets.EMAIL }}
           LINKEDIN_PROFILE_URL: ${{ secrets.LINKEDIN_PROFILE_URL }}
           GH_PROFILE_URL: ${{ secrets.GH_PROFILE_URL }}
